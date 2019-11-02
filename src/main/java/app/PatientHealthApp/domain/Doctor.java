@@ -1,4 +1,4 @@
-package app.PatientHealthApp;
+package app.PatientHealthApp.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,6 +26,12 @@ public class Doctor {
 	private String name;
 	
 	@Column
+	private String username;
+	
+	@Column
+	private String password;
+	
+	@Column
 	private String role;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -36,7 +42,30 @@ public class Doctor {
 	
 	public Doctor (String name) {
 		this.name = name;
+		this.username = username;
 	}
 	
+	public void setName (String name) {
+		this.name = name;
+	}
+	
+	public String getName () {
+		return name;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	public String getRole() {
+		return role;
+	}
 	
 }

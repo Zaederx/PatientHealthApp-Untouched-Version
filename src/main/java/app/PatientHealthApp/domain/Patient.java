@@ -1,4 +1,4 @@
-package app.PatientHealthApp;
+package app.PatientHealthApp.domain;
 
 
 import java.util.ArrayList;
@@ -44,9 +44,18 @@ public class Patient {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "patients")
 	public List<Doctor> doctors;
 	
+	//default constructor - needed by Spring
+	public Patient() {
+		
+	}
+	
 	public Patient(String name) {
 		this.name = name;
 
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	public String getRole() {

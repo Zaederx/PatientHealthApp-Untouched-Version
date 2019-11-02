@@ -1,10 +1,8 @@
 package app.PatientHealthApp.repository;
 
-
-
 import org.springframework.data.repository.CrudRepository;
 
-import app.PatientHealthApp.domain.Patient;
+import app.PatientHealthApp.domain.Doctor;
 
 /**
  * A Repository used to interface with User data in the database.
@@ -15,12 +13,9 @@ import app.PatientHealthApp.domain.Patient;
  *
  */
 
+public interface DoctorRepository extends CrudRepository<Doctor, Integer>{
+	
+	Doctor findByName(String name);
+	Doctor findById(int id);
 
-public interface PatientRepository extends CrudRepository<Patient,Integer> {
-
-	
-	Patient findByUsername(String name);
-	
-	Patient findById(int id);
-	
 }

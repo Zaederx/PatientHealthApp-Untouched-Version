@@ -7,7 +7,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import app.PatientHealthApp.services.UserServiceDetailsImpl;
+
+import app.PatientHealthApp.domain.Patient;
+import app.PatientHealthApp.services.PatientServiceDetailsImpl;
+import app.PatientHealthApp.services.PatientServices;
 
 
 
@@ -24,7 +27,7 @@ import app.PatientHealthApp.services.UserServiceDetailsImpl;
 public class ChronicPatientHealthApp implements CommandLineRunner{
 	
 	@Autowired
-	UserServiceDetailsImpl userServices; 
+	PatientServiceDetailsImpl patientServices; 
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChronicPatientHealthApp.class, args);
@@ -35,11 +38,12 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 	public void run (String ... strings ) throws Exception {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-		Patient p = new Patient("Zach");
-		p.setPassword("password");
-		p.setEmail("email@email.com");
-		p.setUsername("ZI");
-//		userServices.;
+//		Patient p = new Patient("Zach");
+//		p.setPassword(encoder.encode("password"));
+//		p.setEmail("email@email.com");
+//		p.setUsername("ZI");
+//		p.setRole("PATIENT");
+//		patientServices.save(p);
 		
 	}
 }
