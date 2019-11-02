@@ -17,19 +17,19 @@ public class LoginController {
 	}
 	
 	
-//	@RequestMapping(value="login", method=RequestMethod.GET)
-//	public String login() {
-//		
-//		String view = "login";
-//		return view;
-//	}
-//	
-//	@RequestMapping(value = "/", method=RequestMethod.GET)
-//	public String viewDefault() {
-//		
-//		String view = "login";
-//		return view;
-//	}
+	@RequestMapping(value="login", method=RequestMethod.GET)
+	public String login() {
+		
+		String view = "login";
+		return view;
+	}
+	
+	@RequestMapping(value = "/", method=RequestMethod.GET)
+	public String viewDefault() {
+		
+		String view = "login";
+		return view;
+	}
 	
 	@RequestMapping(value="home", method = RequestMethod.GET)
 	public String home() {

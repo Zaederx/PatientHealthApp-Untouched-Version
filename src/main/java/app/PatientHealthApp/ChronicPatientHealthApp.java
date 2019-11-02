@@ -7,8 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import app.PatientHealthApp.repository.PatientRepository;
+import app.PatientHealthApp.services.UserServiceDetailsImpl;
 
 
 
@@ -25,7 +24,7 @@ import app.PatientHealthApp.repository.PatientRepository;
 public class ChronicPatientHealthApp implements CommandLineRunner{
 	
 	@Autowired
-	public PatientRepository userRepo;
+	UserServiceDetailsImpl userServices; 
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChronicPatientHealthApp.class, args);
@@ -40,7 +39,7 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 		p.setPassword("password");
 		p.setEmail("email@email.com");
 		p.setUsername("ZI");
-		userRepo.save(p);
+//		userServices.;
 		
 	}
 }

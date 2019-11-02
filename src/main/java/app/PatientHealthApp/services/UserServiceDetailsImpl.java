@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import app.PatientHealthApp.Doctor;
 import app.PatientHealthApp.Patient;
 import app.PatientHealthApp.repository.PatientRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +27,7 @@ public class UserServiceDetailsImpl implements UserServices {
 	private PatientRepository patRepo;
 
 	@Override
-	public UserDetails getPatientByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails getPatientByUsername (String username) throws UsernameNotFoundException {
 		
 		Patient p =  patRepo.findByName(username);
 		
@@ -57,5 +58,21 @@ public class UserServiceDetailsImpl implements UserServices {
 		return patRepo.findById(id);
 	}
 	
+	@Override
+	public PatientRepository getPatientRepo() {
+		return patRepo;
+	}
 
+
+	@Override
+	public Doctor getDoctorById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Doctor getDoctorByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

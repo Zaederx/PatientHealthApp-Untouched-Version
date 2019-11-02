@@ -15,8 +15,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated() // all request should be authenticated...
 				
 				.and().formLogin()
-//				.loginPage("") // for custom page - later on
-//				.loginProcessingUrl("") for custom Processing
+				.loginPage("/login") // for custom page - later on
+				.loginProcessingUrl("/authenticateUser") //for custom Processing
 				.permitAll()	//...except default Spring Login page
 		;
 	}
