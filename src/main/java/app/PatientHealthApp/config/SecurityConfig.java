@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import app.PatientHealthApp.services.PatientServiceDetailsImpl;
 
@@ -18,13 +19,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//for testing purposes - to be configured later
 //		https.authorizeRequests().antMatchers("/").permitAll(); 
 		
-		https.authorizeRequests() 
+		https
+				.requiresChannel()
+				.anyRequest()
+				.requiresSecure()
+			.and()
+				.authorizeRequests()
+				.antMatchers("/home/**").permitAll()
+				
+				.antMatchers("/doctor/**").hasRole("DOCTOR")
+				.antMatchers("/patient/**").hasRole("PATIENT")
+				.antMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated() // all request should be authenticated...
 				
 				.and().formLogin()
+				.passwordParameter("password")
+				.usernameParameter("username")
 				.loginPage("/login") // for custom page - later on
 				.loginProcessingUrl("/authenticateUser") //for custom Processing
 				.permitAll()	//...except default Spring Login page
+				
+				.and().logout()
+					.invalidateHttpSession(true)
+					.deleteCookies("SESSION")//delete Spring default cookies
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+					.logoutSuccessUrl("/session-end")
+					.permitAll()
+					
+				.and().exceptionHandling().accessDeniedPage("/login-error") 
+				// same as error page so hackers can' tell whether there is a resource page at that request 
 		;
 	}
 	
