@@ -8,12 +8,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import app.PatientHealthApp.services.PatientServiceDetailsImpl;
+import app.PatientHealthApp.services.UserServiceDetailsImpl;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	private PatientServiceDetailsImpl pDetails;
+	private UserServiceDetailsImpl uDetails;
 	@Override
 	protected void configure (HttpSecurity https) throws Exception {
 		//for testing purposes - to be configured later
@@ -24,8 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest()
 				.requiresSecure()
 			.and()
-				.authorizeRequests()
-				.antMatchers("/home/**").permitAll()
+				.authorizeRequests().antMatchers("/","/home").permitAll()
 				
 				.antMatchers("/doctor/**").hasRole("DOCTOR")
 				.antMatchers("/patient/**").hasRole("PATIENT")
@@ -36,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordParameter("password")
 				.usernameParameter("username")
 				.loginPage("/login") // for custom page - later on
+				.defaultSuccessUrl("/authenticatedUsed", true)
 				.loginProcessingUrl("/authenticateUser") //for custom Processing
 				.permitAll()	//...except default Spring Login page
 				
@@ -54,6 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal (AuthenticationManagerBuilder auth ) throws Exception {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		auth.userDetailsService(pDetails).passwordEncoder(encoder);
+		auth.userDetailsService(uDetails).passwordEncoder(encoder);
 	}
 }

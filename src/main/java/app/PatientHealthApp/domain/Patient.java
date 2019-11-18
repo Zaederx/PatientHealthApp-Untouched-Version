@@ -21,59 +21,30 @@ import javax.persistence.ManyToMany;
  */
 
 @Entity(name = "patient")
-public class Patient {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
-	@Column(name = "role")
-	private String role = "PATIENT";
+public class Patient extends User{
 	
 	@Column(name="email")
 	private String email;
 	
-	@Column(name="username")
-	private String username;
-	
-	@Column(name="password")
-	private String password;
-	
-	@Column(name = "name")
-	private String name;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "patients")
 	public List<Doctor> doctors;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	public List<Prescription> prescriptions;
 	
 	//default constructor - needed by Spring
 	public Patient() {
 		
 	}
 	
-	public Patient(String name) {
-		this.name = name;
-
-	}
-	
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
-	public String getRole() {
-		return role;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
+	public Patient(String name, String username, String password, String role, String email) {
+		super(name,username,password,role);
+		this.email = email;
 	}
 
 	public void setEmail(String email) {
 	this.email = email;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
-	}
 }

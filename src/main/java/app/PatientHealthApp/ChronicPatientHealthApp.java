@@ -9,8 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import app.PatientHealthApp.domain.Patient;
-import app.PatientHealthApp.services.PatientServiceDetailsImpl;
+import app.PatientHealthApp.domain.User;
+import app.PatientHealthApp.repository.UserRepository;
 import app.PatientHealthApp.services.PatientServices;
+import app.PatientHealthApp.services.UserServiceDetailsImpl;
 
 
 
@@ -25,9 +27,9 @@ import app.PatientHealthApp.services.PatientServices;
 
 @SpringBootApplication
 public class ChronicPatientHealthApp implements CommandLineRunner{
-	
 	@Autowired
-	PatientServiceDetailsImpl patientServices; 
+	UserRepository uRepo;
+	 
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChronicPatientHealthApp.class, args);
@@ -38,12 +40,13 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 	public void run (String ... strings ) throws Exception {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
-//		Patient p = new Patient("Zach");
+//		Patient p = new Patient();
+//		p.setName("Zach");
 //		p.setPassword(encoder.encode("password"));
 //		p.setEmail("email@email.com");
 //		p.setUsername("ZI");
 //		p.setRole("PATIENT");
-//		patientServices.save(p);
+//		uRepo.save(p);
 		
 	}
 }

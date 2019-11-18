@@ -1,22 +1,39 @@
 <!DOCTYPE HTML>
 <!--  <%@ taglib uri= "htttp://www.springframework.org/tags/form" prefix="form" %> -->
-<html xmlns:th="http://www.thymeleaf.org"/>
-<html>
-  <head>
+<html xmlns:th="http://www.thymeleaf.org">
 
-  </head>
-<h1>Login</h1>
-<p>
-  This is the login jsp.
-</p>
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<!--  <form: form :action="${page.Context.request.contextPath}/authenticateUser" method="POST">-->
-<form th:action= "@{/authenticateUser}" method="POST" >
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
-<p> Username: <input type="text" name="username" /> </p>
-<p> Password: <input type="password" name="password"/> </p>
-<input type="submit" value="Login"/>
-  
-</form>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<div class="jumbotron text-center">
+  <h1>Login</h1>
+</div>
+
+<div class="container text-center col-sm-2">
+  <p>This is the login jsp.</p>
+
+  <!--  <form: form :action="${page.Context.request.contextPath}/authenticateUser" method="POST">-->
+  <form class="form-group" th:action="@{/authenticateUser}" method="POST">
+
+    <p> Username: </p>
+    <input class="form-control" type="text" name="username" /> <br>
+    <p> Password: </p>
+    <input class="form-control" type="password" name="password" /> <br> <br>
+
+    <button class="btn btn-secondary" type="submit" value="Login">Login</button>
+
+  </form>
+
+</div>
+
 </html>
