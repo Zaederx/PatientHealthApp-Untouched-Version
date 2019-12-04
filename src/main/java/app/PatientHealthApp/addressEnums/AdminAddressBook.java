@@ -9,7 +9,10 @@ public enum AdminAddressBook {
 	A_ADD_PATIENT("/addPatient","/admin-add-patient"),
 	A_REMOVE_PATIENT("/removePatient", "/admin-remove-patient"),
 	A_MODIFY_PATIENT("/modifyPatient", "/admin-modify-patient"),
-	A_ADD_ADMIN("/addAdmin","/admin-add-admin");
+	A_ADD_ADMIN("/addAdmin","/admin-add-admin"),
+	A_REMOVE_ADMIN("/removeAdmin","/admin-remove-admin"),
+	A_ADD_USER("/addUser","/admin-add-user");
+
 	String address;
 	String resource;
 	String domain = "admin";
@@ -22,7 +25,7 @@ public enum AdminAddressBook {
 	/**
 	 * @return the address
 	 */
-	public String getAddress() {
+	public String controller() {
 		return domain+address;
 	}
 
@@ -36,7 +39,7 @@ public enum AdminAddressBook {
 	/**
 	 * @return the resource
 	 */
-	public String controller() {
+	public String resource() {
 		return domain+resource;
 	}
 

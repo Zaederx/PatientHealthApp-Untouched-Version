@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import app.PatientHealthApp.formObjects.DoctorRegForm;
 /**
  * Doctor {@link Entity} that defines doctor table.
  * 
@@ -26,8 +28,16 @@ public class Doctor extends User {
 	inverseJoinColumns=@JoinColumn(name ="patient_id" ))
 	public List<Patient> patients;
 	
+	public Doctor() {
+		
+	}
+	
 	public Doctor (String name, String username, String password, String role) {
 		super(name,username,password,"DOCTOR");
+	}
+	
+	public Doctor(DoctorRegForm form) {
+		super(form.getName(),form.getUsername(),form.getPassword(),"DOCTOR");
 	}
 	
 	public List<Patient> getPatients() {

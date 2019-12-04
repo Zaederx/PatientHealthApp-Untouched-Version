@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest()
 				.requiresSecure()
 			.and()
-				.authorizeRequests().antMatchers("/","/home").permitAll()
+				.authorizeRequests().antMatchers("/","/home","/validate").permitAll()
 				
 				.antMatchers("/doctor/**").hasRole("DOCTOR")
 				.antMatchers("/patient/**").hasRole("PATIENT")
@@ -35,15 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.passwordParameter("password")
 				.usernameParameter("username")
 				.loginPage("/login") // for custom page - later on
-				.defaultSuccessUrl("/authenticatedUsed", true)
+				.defaultSuccessUrl("/", true)
 				.loginProcessingUrl("/authenticateUser") //for custom Processing
 				.permitAll()	//...except default Spring Login page
 				
+				.and().rememberMe()
+				.rememberMeCookieName("PatientApp")
+				.rememberMeCookieName("remember-me")
 				.and().logout()
 					.invalidateHttpSession(true)
-					.deleteCookies("SESSION")//delete Spring default cookies
+					.deleteCookies("JSESSIONID")//delete Spring default cookies
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-					.logoutSuccessUrl("/session-end")
+					.logoutSuccessUrl("/login?logout")
 					.permitAll()
 					
 				.and().exceptionHandling().accessDeniedPage("/login-error") 

@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Class to represent users.
@@ -33,6 +36,8 @@ public class User {
 	protected String password;
 	@Column(nullable = false)
 	protected String role;
+	@Transient
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	
 	public User () {
@@ -42,7 +47,7 @@ public class User {
 	public User(String name, String username, String password, String role ) {
 		this.name = name;
 		this.username = username;
-		this.password = password;
+		this.password = encoder.encode(password);
 		this.role = role;
 	}
 
@@ -99,7 +104,7 @@ public class User {
 	 * @param password the password to set
 	 */
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = encoder.encode(password);
 	}
 
 	/**

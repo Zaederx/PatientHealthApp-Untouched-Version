@@ -15,6 +15,7 @@ import app.PatientHealthApp.domain.Doctor;
 
 public interface DoctorRepository extends CrudRepository<Doctor, Integer>{
 	
+	Doctor findByUsername(String username);
 	Doctor findByName(String name);
 	Doctor findById(int id);
 

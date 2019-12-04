@@ -14,12 +14,12 @@
 
   <!-- JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Register Doctor</title>
+  <title>Search Users</title>
 </head>
 
 <body>
   <div class="jumbotron text-center">
-    <h1>Register Doctor</h1>
+    <h1>Search Users</h1>
     <h3></h3>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
       <ul class="navbar-nav">
@@ -48,7 +48,7 @@
 
       <div id="c1" class="collapse show" data-parent="#accordian">
         <div class="card-body">
-        <form class="form-group" action="#" th:action="@{admin/admin-add-doctor}" th:object="${doctorForm}" method="post">
+        <form class="form-group" action="#" th:action="@{admin/admin-add-doctor}" th:object="${doctorForm}" method="POST">
 
           <label class="label">Name</label>
           <input class="form-control" type="text" placeholder="Please Enter a Name"/>
@@ -63,7 +63,7 @@
           <input class="form-control" type="text" placeholder="S0JITR0GJDRJ" />
 
           <label class="label">Assigned Centre</label>
-          <label class="form-control" type="text" placeholder="DeMontfort Surgery"
+          <label class="form-control" type="text" placeholder="DeMontfort Surgery"></label>
 
         </form>
         </div>

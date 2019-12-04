@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import app.PatientHealthApp.formObjects.PatientRegForm;
+
 /**
  * 
  * @author Zachary Ishmael<br>
@@ -23,7 +25,7 @@ import javax.persistence.ManyToMany;
 @Entity(name = "patient")
 public class Patient extends User{
 	
-	@Column(name="email")
+	@Column(name="email", unique = true)
 	private String email;
 	
 
@@ -35,14 +37,18 @@ public class Patient extends User{
 	
 	//default constructor - needed by Spring
 	public Patient() {
-		
+		this.role = "PATIENT";
 	}
 	
 	public Patient(String name, String username, String password, String role, String email) {
-		super(name,username,password,role);
+		super(name,username,password,"PATIENT");
 		this.email = email;
 	}
 
+	public Patient(PatientRegForm form) {
+		super(form.getName(), form.getUsername(),form.getPassword(),"PATIENT");
+		this.email = form.getEmail();
+	}
 	public void setEmail(String email) {
 	this.email = email;
 	}

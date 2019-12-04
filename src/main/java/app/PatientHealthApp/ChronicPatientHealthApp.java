@@ -8,10 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import app.PatientHealthApp.domain.Admin;
+import app.PatientHealthApp.domain.Doctor;
 import app.PatientHealthApp.domain.Patient;
 import app.PatientHealthApp.domain.User;
+import app.PatientHealthApp.repository.DoctorRepository;
 import app.PatientHealthApp.repository.UserRepository;
-import app.PatientHealthApp.services.PatientServices;
 import app.PatientHealthApp.services.UserServiceDetailsImpl;
 
 
@@ -29,6 +31,9 @@ import app.PatientHealthApp.services.UserServiceDetailsImpl;
 public class ChronicPatientHealthApp implements CommandLineRunner{
 	@Autowired
 	UserRepository uRepo;
+	
+	@Autowired
+	DoctorRepository dRepo;
 	 
 
 	public static void main(String[] args) {
@@ -38,15 +43,21 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 	@Override
 	@Transactional
 	public void run (String ... strings ) throws Exception {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
-//		Patient p = new Patient();
-//		p.setName("Zach");
-//		p.setPassword(encoder.encode("password"));
-//		p.setEmail("email@email.com");
-//		p.setUsername("ZI");
-//		p.setRole("PATIENT");
-//		uRepo.save(p);
+//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//		Admin admin = new Admin();
+//		admin.setName("Zach");
+//		admin.setUsername("Z");
+//		admin.setPassword(encoder.encode("password"));
+//		admin.setId(5);
+//		
+//		uRepo.save(admin);
+//		Doctor doctor = new Doctor();
+//		doctor.setName("JIM");
+//		doctor.setPassword(encoder.encode("password"));
+////		doctor.setEmail("email@email.com");
+//		doctor.setUsername("JIM");
+//		doctor.setRole("PATIENT");
+//		uRepo.save(doctor);
 		
 	}
 }
