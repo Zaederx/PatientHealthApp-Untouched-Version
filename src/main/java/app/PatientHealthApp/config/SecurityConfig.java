@@ -1,5 +1,7 @@
 package app.PatientHealthApp.config;
 
+import java.nio.file.Files;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,12 +21,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//for testing purposes - to be configured later
 //		https.authorizeRequests().antMatchers("/").permitAll(); 
 		
+
 		https
 				.requiresChannel()
 				.anyRequest()
 				.requiresSecure()
 			.and()
-				.authorizeRequests().antMatchers("/","/home","/validate").permitAll()
+				.authorizeRequests().antMatchers("/","/home","/validate","/resources/**", "/img/**.jpg","/ajax/**").permitAll()
 				
 				.antMatchers("/doctor/**").hasRole("DOCTOR")
 				.antMatchers("/patient/**").hasRole("PATIENT")
@@ -41,10 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				
 				.and().rememberMe()
 				.rememberMeCookieName("PatientApp")
-				.rememberMeCookieName("remember-me")
+				.rememberMeParameter("rememberMe")
+				.tokenValiditySeconds(172800)
+				
 				.and().logout()
 					.invalidateHttpSession(true)
 					.deleteCookies("JSESSIONID")//delete Spring default cookies
+					.deleteCookies("PatientApp")
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 					.logoutSuccessUrl("/login?logout")
 					.permitAll()

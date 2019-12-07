@@ -14,6 +14,8 @@
 
   <!-- JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!--FontAwesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <title>Admin Home</title>
 </head>
 
@@ -21,19 +23,21 @@
   <div class="jumbotron text-center">
     <h1>Admin Home</h1>
     <h3></h3>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
-      <ul class="navbar-nav">
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark row">
+    <div class="justify-content-left col-sm-2"><a th:ref="@{/home}" class="fa fa-home" style="color:white; font-size:40px"></a></div>
+    <div class="col-sm-8">
+      <ul class="navbar-nav justify-content-center">
         <li class="nav-item">
-          <a class="nav-link" href="/home"><button class="btn btn-secondary active">Admin Home</button></a>
+          <a class="nav-link" href="admin/home"><button class="btn btn-secondary active">Admin Home</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login"><button class="btn btn-primary">Logout</button></a>
+          <a class="nav-link" href="/logout"><button class="btn btn-primary">Logout</button></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/patient/assistance"><button class="btn btn-primary">Get Assistance</button></a>
         </li>
       </ul>
-
+	</div>
     </nav>
   </div>
 

@@ -3,6 +3,7 @@
 
 #Bin
 bin/
+build/*
 # Log file
 *.log
 

@@ -47,13 +47,13 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 //		Admin admin = new Admin();
 //		admin.setName("Zach");
 //		admin.setUsername("Z");
-//		admin.setPassword(encoder.encode("password"));
+//		admin.setPassword("password");
 //		admin.setId(5);
 //		
 //		uRepo.save(admin);
 //		Doctor doctor = new Doctor();
 //		doctor.setName("JIM");
-//		doctor.setPassword(encoder.encode("password"));
+//		doctor.setPassword("password");
 ////		doctor.setEmail("email@email.com");
 //		doctor.setUsername("JIM");
 //		doctor.setRole("PATIENT");

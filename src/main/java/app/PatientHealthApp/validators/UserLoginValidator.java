@@ -60,7 +60,8 @@ public class UserLoginValidator implements Validator{
 			uPassword= user.getPassword();
 			} catch (NullPointerException e) {
 				errors.rejectValue("password", "", "Invalid password.");
-				nullStr = true;/*if no string returned 
+				nullStr = true;
+				System.out.println("***Null String = true****");/*if no string returned 
 				notify so no password check is performed*/
 			}
 	

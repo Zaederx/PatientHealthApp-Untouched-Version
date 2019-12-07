@@ -11,11 +11,32 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import app.PatientHealthApp.repository.AdminRepository;
+import app.PatientHealthApp.repository.DoctorRepository;
+import app.PatientHealthApp.repository.PatientRepository;
 import app.PatientHealthApp.repository.UserRepository;
+
+/**
+ * Provides access to all User Repositories.
+ * Implements {@link UserDetailsService}.
+ * Also overrides {@code loadByUsername(String username)} method in 
+ * UserDetails service to provide custom user roles assignment.
+ * @author Zachary Ishmael
+ *
+ */
 @Service
 public class UserServiceDetailsImpl implements UserDetailsService{
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	PatientRepository pRepo;
+	
+	@Autowired
+	DoctorRepository dRepo;
+	
+	@Autowired
+	AdminRepository aRepo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,6 +64,34 @@ public class UserServiceDetailsImpl implements UserDetailsService{
 				accountNotLocked,
 				authorities
 				);
+	}
+
+	/**
+	 * @return the UserRepository
+	 */
+	public UserRepository getUserRepo() {
+		return userRepo;
+	}
+
+	/**
+	 * @return the PatientRepository.
+	 */
+	public PatientRepository getpRepo() {
+		return pRepo;
+	}
+
+	/**
+	 * @return the DoctorRepository
+	 */
+	public DoctorRepository getdRepo() {
+		return dRepo;
+	}
+
+	/**
+	 * @return the AdminRepository
+	 */
+	public AdminRepository getaRepo() {
+		return aRepo;
 	}
 
 }
