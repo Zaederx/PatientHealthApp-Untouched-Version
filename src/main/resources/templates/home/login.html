@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-<!--  <%@ taglib uri= "htttp://www.springframework.org/tags/form" prefix="form" %> -->
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -33,16 +32,15 @@
       </nav>
 </div>
 
-<div class="container text-center col-sm-2">
+<div class="container d-flex flex-sm-column col-sm-8 justify-content-center">
 <div  th:if="${param.error}" class="alert alert-info show">Login unsuccessful.</div>
 <div th:if="${param.logout}" class="alert alert-primary show">You have successfully logged out.</div>
-  <!--  <form: form :action="${page.Context.request.contextPath}/authenticateUser" method="POST">-->
   <form class="form-group" th:action="@{/validate}" th:object="${userLoginForm}" method="POST">
 
     <label> Username: </label>
     <input id="username" class="form-control" type="text" name="username" th:field="*{username}" /> <br>
     <p class="alert alert-info" th:if="${#fields.hasErrors('username')}" th:errors="*{username}" > </p>
-    <p id="username-error"></p>
+   	
     <label> Password: </label>
     <input class="form-control" type="password" name="password" th:field="*{password}"/> <br> <br>
     <p class="alert alert-info" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> </p>
@@ -56,31 +54,5 @@
 
 </div>
 
-<script>
-
-$(document).ready(function(){
-	$("#username").keyup(function(){
-		$.ajax({
-			type:"GET",
-			url:"ajax/is-user/"+$("#username").val(),
-			success: function(result) {
-				 if ($.trim(result) == '{}') {
-					
-				} else {
-					console.log(result);
-					var str = JSON.stringify(result);
-					var data = JSON.parse(str);
-					var res = data.response;
-					console.log("Ready functions working.");
-					if (res == true) {
-						$('#username-error').html("Username already exists. Choose another username.");
-						console.log("Username already exists. Choose another username.");
-					}
-				 } 
-			}
-		});
-	});
-});
-</script>
 
 </html>

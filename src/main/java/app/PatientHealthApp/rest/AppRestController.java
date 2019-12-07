@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,21 +38,27 @@ public class AppRestController {
 	}
 	
 	@GetMapping("/is-user/{username}")
-	public @ResponseBody Response isUsername(@PathVariable String username) {
+	public @ResponseBody Response isUsername(@PathVariable(required = false) String username) {
 		Response res = new Response();
+		boolean exits = true;
+		
+		if(username.isBlank()) {
+			res.setResponse(!exits);
+			return res;
+			}
 		System.out.println("is-user/{username} called");
 		User user = uRepo.findByUsername(username);
 		try {
 		if ( user != null) {
-			res.setResponse(true);
+			res.setResponse(exits);
 			return res;
 		}}
 		catch (Exception e) {
-			res.setResponse(true);
+			res.setResponse(exits);
 			return res;
 		}
 		System.out.println("response = true");
-		res.setResponse(false);
+		res.setResponse(!exits);
 		return res;
 	}
 }

@@ -2,7 +2,7 @@
 *.class
 
 #Bin
-bin/
+bin/*
 build/*
 # Log file
 *.log

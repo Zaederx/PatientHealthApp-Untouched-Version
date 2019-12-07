@@ -41,6 +41,10 @@ public class AdminController {
 		return AdminAddressBook.A_HOME.resource();
 	}
 	
+	@GetMapping("/assistance")
+	public String getAssistance() {
+		return "/admin/admin-assistance";
+	}
 //	@GetMapping("/adminUser")
 //	public String addUserPage() {
 //		return AdminAddressBook.A_ADD_USER.resource();

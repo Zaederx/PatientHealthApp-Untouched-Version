@@ -43,14 +43,14 @@ public class UserLoginValidator implements Validator{
 		try {
 			user = uRepo.findByUsername(form.getUsername());
 		} catch (NullPointerException e) {
-			errors.rejectValue("username", "", "Invalid username.");
+			errors.rejectValue("password", "", "Invalid username or password.");
 			nullUser = true;
 		} catch (Exception e) {
-			errors.rejectValue("username", "", "Invalid username.");
+			errors.rejectValue("password", "", "Invalid username or password.");
 			nullUser = true;
 		}
 		if (user == null) {
-			errors.rejectValue("username", "", "Invalid username.");
+			errors.rejectValue("password", "", "Invalid username or password.");
 			nullUser = true;
 		}
 		if (!nullUser) {
@@ -59,7 +59,7 @@ public class UserLoginValidator implements Validator{
 			try {
 			uPassword= user.getPassword();
 			} catch (NullPointerException e) {
-				errors.rejectValue("password", "", "Invalid password.");
+				errors.rejectValue("password", "", "Invalid username or password.");
 				nullStr = true;
 				System.out.println("***Null String = true****");/*if no string returned 
 				notify so no password check is performed*/
@@ -68,7 +68,7 @@ public class UserLoginValidator implements Validator{
 			/*Only if it returns a password string , 
 			 * then check if password matches db password*/
 			if (!nullStr && !encoder.matches(form.getPassword(), uPassword)) {
-				errors.rejectValue("password", "", "Invalid password.");
+				errors.rejectValue("password", "", "Invalid username or password.");
 			}
 		}
 	}

@@ -24,13 +24,13 @@
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/home"><button class="btn btn-secondary active">Admin Home</button></a>
+          <a class="nav-link" href="#"><button class="btn btn-secondary active">Admin Home</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/login"><button class="btn btn-primary">Logout</button></a>
+          <a class="nav-link" th:href="@{/logout}"><button class="btn btn-primary">Logout</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/patient/assistance"><button class="btn btn-primary">Get Assistance</button></a>
+          <a class="nav-link" th:href="@{/admin/assistance}"><button class="btn btn-primary">Get Assistance</button></a>
         </li>
       </ul>
 
@@ -42,18 +42,19 @@
     <!-- CARD 1 -->
   <div class="card text-center">
     <div class="card-header" id="headingOne">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
+        <button class="username-error btn btn-link" onclick="setId('#patient-username-error', '#patient-username')" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
           Patient
         </button>
     </div>
     <div id="patientCollapse" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-      <div class="container col-sm-4">
+      <div class="container d-flex flex-sm-column col-sm-8 justify-content-center">
     	<form class="form-group" action="#" th:action="@{/admin/register-patient}" th:object="${patientRegForm}" method="POST">
 		   	<label>Name</label>
 		   	<input class="form-control text-center" type="text" th:field="*{name}" placeholder="Henry Thompson" pattern="{1,}" title="This field cannot be empty"></input>
 		   	<label>Username</label>
-		   	<input class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
+		   	<input id="patient-username" class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
+		   	<div id="patient-username-error"></div>
 		   	<label>Email</label>
 		   	<input class="form-control text-center" type="text" th:field="*{email}" placeholder="email@email.com" ></input>
 		   	<br>
@@ -78,7 +79,7 @@
     </div>
     <div id="doctorCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
-      	<div class="container col-sm-4">
+      	<div class="container d-flex flex-sm-column col-sm-8 justify-content-center">
 	        <form class="form-group" action="#" th:action="@{/admin/register-doctor}" th:object="${doctorRegForm}" method="POST">
 			   	<label>Name</label>
 			   	<input class="form-control text-center" type="text" th:field="*{name}" placeholder="Henry Thompson" pattern="{1,}" title="This field cannot be empty"></input>
@@ -109,7 +110,7 @@
     </div>
     <div id="admin" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-        <div class="container col-sm-4">
+        <div class="container d-flex flex-sm-column col-sm-8 justify-content-center">
 	        <form class="form-group" action="#" th:action="@{/admin/register-admin}" th:object="${adminRegForm}" method="POST">
 			   	<label>Name</label>
 			   	<input class="form-control text-center" type="text" th:field="*{name}" placeholder="Henry Thompson" pattern="{1,}" title="This field cannot be empty"></input>
@@ -130,9 +131,45 @@
       </div>
     </div>
   </div>
-
-
 </div>
 </body>
-
+<script>
+/* $('.username-error').hide(); */
+/* $('.username-error').html('<p class="alert alert-info">Username already exists. Choose another username.</p>'); */
+var alertId = '#patient-username-error';
+var inputFieldId = '#patient-username';
+function setId(regId, uId) {
+	alertId = regId;
+	inputFieldId = uId;
+	console.log(alertId);
+	console.log(inputFieldId);
+}
+$(document).ready(function(){
+	$(inputFieldId).keyup(function(){
+		$(alertId).hide();//reset alert
+		$.ajax({
+			type:"GET",
+			url:"/ajax/is-user/"+$(inputFieldId).val(),
+			success: function(result) {
+				console.log(result);
+				 if ($.trim(result) == '{}') {
+					console.log(result);
+				} else {
+					var str = JSON.stringify(result);
+					var data = JSON.parse(str);
+					var res = data.response;
+					console.log("Ready functions working.");
+					if (res == true) {
+						$(alertId).show();
+						$(alertId).html('<p class="alert alert-info">Username already exists. Choose another username.</p>');
+						console.log("Username already exists. Choose another username.");
+					} else {
+						$(alertId).hide();
+					}
+				 } 
+			}
+		});
+	});
+});
+</script>
 </html>
