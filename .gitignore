@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
-
+#Gradle ignore
+.gradle
 #Bin
 bin/*
 build/*

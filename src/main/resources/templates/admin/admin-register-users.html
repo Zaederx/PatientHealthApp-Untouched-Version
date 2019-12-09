@@ -14,12 +14,12 @@
 
   <!-- JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <title>Admin Home</title>
+  <title>Register User</title>
 </head>
 
 <body>
   <div class="jumbotron text-center">
-    <h1>Admin Home</h1>
+    <h1>Admin - Register User</h1>
     <h3></h3>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
       <ul class="navbar-nav">
@@ -42,7 +42,7 @@
     <!-- CARD 1 -->
   <div class="card text-center">
     <div class="card-header" id="headingOne">
-        <button class="username-error btn btn-link" onclick="setId('#patient-username-error', '#patient-username')" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
+        <button class="username-error btn btn-link" onclick="setId('#patient-username-error', '#patient-username','#reg-btn-one')" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
           Patient
         </button>
     </div>
@@ -64,7 +64,7 @@
 		   	<label>Repeat Password</label>
 		   	<input class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
 		   	<br>
-		   	<button class="btn btn-secondary" type="submit">Register</button>
+		   	<button id="reg-btn-one" class="btn btn-primary" type="submit" th:if="${#fields.hasAnyErrors() != true}">Register</button>
     	</form>
        </div>
       </div>
@@ -125,7 +125,7 @@
 			   	
 			   	
 			   	
-			   	<button class="btn btn-secondary" type="submit">Register</button>
+			   	<button id="register-button" class="btn btn-primary" type="submit">Register</button>
 	    	</form>
     	</div>
       </div>
@@ -138,15 +138,39 @@
 /* $('.username-error').html('<p class="alert alert-info">Username already exists. Choose another username.</p>'); */
 var alertId = '#patient-username-error';
 var inputFieldId = '#patient-username';
-function setId(regId, uId) {
+var regButton = '#reg-btn-one';
+function setId(regId, uId, button) {
 	alertId = regId;
 	inputFieldId = uId;
+	regButton = button;
 	console.log(alertId);
 	console.log(inputFieldId);
+}
+/*Make button unusable*/
+function disableButton () {
+	/*remove old css*/
+	$(regButton).removeClass("btn-primary");
+	
+	/*add new css + attribute*/
+	$(regButton).attr("disabled",true);
+	$(regButton).addClass("disabled");
+	$(regButton).addClass("btn-secondary");
+}
+
+/*Make button usuable*/
+function enableButton () {
+	/*remove old css + attribute*/
+	$(regButton).attr("disabled",false);
+	$(regButton).removeClass("disabled");
+	$(regButton).removeClass("btn-secondary");
+	/*add new css*/
+	$(regButton).addClass("btn-primary");
 }
 $(document).ready(function(){
 	$(inputFieldId).keyup(function(){
 		$(alertId).hide();//reset alert
+		enableButton();
+		$("register").removeClass("disabled");
 		$.ajax({
 			type:"GET",
 			url:"/ajax/is-user/"+$(inputFieldId).val(),
@@ -160,11 +184,14 @@ $(document).ready(function(){
 					var res = data.response;
 					console.log("Ready functions working.");
 					if (res == true) {
+						disableButton();
 						$(alertId).show();
 						$(alertId).html('<p class="alert alert-info">Username already exists. Choose another username.</p>');
 						console.log("Username already exists. Choose another username.");
 					} else {
+						enableButton();
 						$(alertId).hide();
+						console.log("Good username.");
 					}
 				 } 
 			}

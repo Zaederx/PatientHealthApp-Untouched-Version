@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +24,14 @@ import app.PatientHealthApp.formObjects.PatientRegForm;
 import app.PatientHealthApp.repository.AdminRepository;
 import app.PatientHealthApp.repository.DoctorRepository;
 import app.PatientHealthApp.repository.PatientRepository;
+import app.PatientHealthApp.repository.UserRepository;
+import app.PatientHealthApp.validators.PatientRegFormValidator;
 
 @Controller
 @RequestMapping("admin")
 public class AdminController {
-	
+	@Autowired
+	UserRepository uRepo;
 	@Autowired
 	DoctorRepository dRepo;
 	
@@ -35,6 +40,11 @@ public class AdminController {
 	
 	@Autowired
 	AdminRepository aRepo;
+	
+	@InitBinder("patientRegForm")
+	protected void initBinder(WebDataBinder binder) {
+		binder.addValidators(new PatientRegFormValidator(uRepo));
+	}
 	
 	@GetMapping("/home")
 	public String adminHome() {
@@ -73,11 +83,11 @@ public class AdminController {
 	}
 	
 	@PostMapping("register-patient")
-	public String registerPatient(@Valid @ModelAttribute PatientRegForm form, BindingResult result, Model model) {
+	public String registerPatient(@Valid @ModelAttribute("patientRegForm") PatientRegForm form, BindingResult result, Model model) {
 		Patient p = new Patient(form);
 		pRepo.save(p);
 		if(result.hasErrors()) {
-			return "redirect:/admin/register-users";
+			return "/admin/admin-register-users";
 		}
 		String success = "Patient added successfully.";
 		
@@ -86,7 +96,7 @@ public class AdminController {
 
 //	@PostMapping("removeDoctor")
 //	public String removeDoctor() {
-//		//TODO
+//		//TODO - REMOVE DOCTOR
 //		return null;
 //	}
 //	
@@ -94,7 +104,7 @@ public class AdminController {
 //	
 //	@PostMapping("/removePatient")
 //	public String removePatient() {
-//		//TODO
+//		//TODO - REMOVE PATIENT
 //		return null;
 //	}
 //	
@@ -102,7 +112,7 @@ public class AdminController {
 //	
 //	@PostMapping("/removeAdmin")
 //	public String removeAdmin() {
-//		//TODO
+//		//TODO - REMOVE ADMIN
 //		return null;
 //	}
 	
