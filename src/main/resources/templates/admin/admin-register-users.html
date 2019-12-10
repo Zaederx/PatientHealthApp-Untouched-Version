@@ -42,7 +42,7 @@
     <!-- CARD 1 -->
   <div class="card text-center">
     <div class="card-header" id="headingOne">
-        <button class="username-error btn btn-link" onclick="setId('#patient-username-error', '#patient-username','#reg-btn-one')" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
+        <button class="username-error btn btn-link" onclick="setRegBtn('#reg-btn-one')" data-toggle="collapse" data-target="#patientCollapse" aria-expanded="true" aria-controls="patientCollapse">
           Patient
         </button>
     </div>
@@ -149,6 +149,7 @@
 var alertId = '#patient-username-error';
 var inputFieldId = '#patient-username';
 var regButton = '#reg-btn-one';
+var url = "/ajax/is-user/";//+$(inputFieldId).val()??
 function setId(regId, uId, button) {
 	alertId = regId;
 	inputFieldId = uId;
@@ -164,6 +165,10 @@ function setId(id) {
 
 function setRegBtn(button) {
 	regButton = button;
+}
+
+function setURL() {
+	
 }
 /*Make button unusable*/
 function disableButton () {

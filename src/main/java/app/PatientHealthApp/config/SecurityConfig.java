@@ -27,11 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest()
 				.requiresSecure()
 			.and()
-				.authorizeRequests().antMatchers("/","/home","/validate","/resources/**", "/img/**.jpg","/ajax/**").permitAll()
+				.authorizeRequests().antMatchers("/","/home","/validate","/resources/**", "/img/**.jpg").permitAll()
 				
 				.antMatchers("/doctor/**").hasRole("DOCTOR")
 				.antMatchers("/patient/**").hasRole("PATIENT")
-				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/admin/**","/ajax/**").hasRole("ADMIN")
 				.anyRequest().authenticated() // all request should be authenticated...
 				
 				.and().formLogin()
