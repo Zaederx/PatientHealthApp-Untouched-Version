@@ -84,13 +84,18 @@ public class AdminController {
 	
 	@PostMapping("register-patient")
 	public String registerPatient(@Valid @ModelAttribute("patientRegForm") PatientRegForm form, BindingResult result, Model model) {
+		
+		if(result.hasErrors()) {
+//			model.addAttribute("patientRegForm", new PatientRegForm());
+			model.addAttribute("doctorRegForm", new DoctorRegForm());
+			model.addAttribute("adminRegForm", new AdminRegForm());
+			return "admin/admin-register-users";
+		} else {
 		Patient p = new Patient(form);
 		pRepo.save(p);
-		if(result.hasErrors()) {
-			return "/admin/admin-register-users";
+		
 		}
 		String success = "Patient added successfully.";
-		
 		return "redirect:/admin/register-users?success="+success;
 	}
 

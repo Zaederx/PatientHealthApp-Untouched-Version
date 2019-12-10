@@ -52,17 +52,27 @@
     	<form class="form-group" action="#" th:action="@{/admin/register-patient}" th:object="${patientRegForm}" method="POST">
 		   	<label>Name</label>
 		   	<input class="form-control text-center" type="text" th:field="*{name}" placeholder="Henry Thompson" pattern="{1,}" title="This field cannot be empty"></input>
+		   <!--TODO - dismiss th:if alerts  -->
+		   	<p class="alert alert-info" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+		   	<div id="patient-name-error"></div>
+		   	
 		   	<label>Username</label>
-		   	<input id="patient-username" class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
+		   	<input onfocus="setId('#patient-username')"id="patient-username" class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
 		   	<div id="patient-username-error"></div>
+		   	
 		   	<label>Email</label>
-		   	<input class="form-control text-center" type="text" th:field="*{email}" placeholder="email@email.com" ></input>
+		   	<input onfocus="setId('#patient-email')" class="form-control text-center" type="text"  th:field="*{email}" placeholder="email@email.com" ></input>
+		  	<div id="patient-email-error"></div>
 		   	<br>
+		   
 		   	<label>Password</label>
-		   	<input class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
+		   	<input onfocus="setId('#patient-password')" class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
 		   	pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please enter a password that is at least 8 characters long, has at least one uppercase and one lower letter, and contains at least one number"></input>
+		   	<div id="patient-password-error"></div>
+		   	
 		   	<label>Repeat Password</label>
-		   	<input class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
+		   	<input onclick="setId('#patient-passwordTwo')" class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
+		   	<div id="patient-passwordTwo-error"></div>
 		   	<br>
 		   	<button id="reg-btn-one" class="btn btn-primary" type="submit" th:if="${#fields.hasAnyErrors() != true}">Register</button>
     	</form>
@@ -146,6 +156,15 @@ function setId(regId, uId, button) {
 	console.log(alertId);
 	console.log(inputFieldId);
 }
+
+function setId(id) {
+	inputFieldId = fieldId;
+	alertId = fieldId+'-error';
+}
+
+function setRegBtn(button) {
+	regButton = button;
+}
 /*Make button unusable*/
 function disableButton () {
 	/*remove old css*/
@@ -166,11 +185,19 @@ function enableButton () {
 	/*add new css*/
 	$(regButton).addClass("btn-primary");
 }
-$(document).ready(function(){
+
+function notEmpty(s) {
+	if (s != null && s != undefined && s != "") {
+		return s;
+	}
+}
+
+function validateUsername() {
 	$(inputFieldId).keyup(function(){
 		$(alertId).hide();//reset alert
-		enableButton();
-		$("register").removeClass("disabled");
+		enableButton();//reset button
+		
+		/*Check whether data is valid entry*/
 		$.ajax({
 			type:"GET",
 			url:"/ajax/is-user/"+$(inputFieldId).val(),
@@ -180,23 +207,30 @@ $(document).ready(function(){
 					console.log(result);
 				} else {
 					var str = JSON.stringify(result);
-					var data = JSON.parse(str);
+					var data = JSON.parse(str);//doesn't work without stringify in firefox
 					var res = data.response;
 					console.log("Ready functions working.");
 					if (res == true) {
 						disableButton();
+						var errorMessage = data.errorMessage;
 						$(alertId).show();
-						$(alertId).html('<p class="alert alert-info">Username already exists. Choose another username.</p>');
-						console.log("Username already exists. Choose another username.");
+						$(alertId).html('<p class="alert alert-info">'+errorMessage+'</p>');
+						console.log(errorMessage);
 					} else {
 						enableButton();
 						$(alertId).hide();
-						console.log("Good username.");
+						console.log("Available username.");
 					}
 				 } 
 			}
 		});
 	});
+}
+
+
+$(document).ready(function(){
+	validateUsername();
+	
 });
 </script>
 </html>

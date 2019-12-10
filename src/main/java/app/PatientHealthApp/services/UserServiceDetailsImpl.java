@@ -76,7 +76,7 @@ public class UserServiceDetailsImpl implements UserDetailsService{
 	/**
 	 * @return the PatientRepository.
 	 */
-	public PatientRepository getpRepo() {
+	public PatientRepository getPatientRepo() {
 		return pRepo;
 	}
 

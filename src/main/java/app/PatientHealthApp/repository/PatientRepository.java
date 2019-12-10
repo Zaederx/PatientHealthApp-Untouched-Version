@@ -21,6 +21,8 @@ public interface PatientRepository extends CrudRepository<Patient,Integer> {
 	
 	Patient findByUsername(String name);
 	
+	Patient findByEmail(String email);
+	
 	Patient findById(int id);
 	
 }
