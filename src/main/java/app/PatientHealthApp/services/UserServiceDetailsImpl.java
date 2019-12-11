@@ -83,14 +83,14 @@ public class UserServiceDetailsImpl implements UserDetailsService{
 	/**
 	 * @return the DoctorRepository
 	 */
-	public DoctorRepository getdRepo() {
+	public DoctorRepository getDoctorRepo() {
 		return dRepo;
 	}
 
 	/**
 	 * @return the AdminRepository
 	 */
-	public AdminRepository getaRepo() {
+	public AdminRepository getAdminRepo() {
 		return aRepo;
 	}
 

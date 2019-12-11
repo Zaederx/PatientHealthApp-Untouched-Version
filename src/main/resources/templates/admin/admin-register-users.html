@@ -57,21 +57,21 @@
 		   	<div id="patient-name-error"></div>
 		   	
 		   	<label>Username</label>
-		   	<input onfocus="setId('#patient-username')"id="patient-username" class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
+		   	<input onfocus="setId('#patient-username'); setURL('/is-user/');"id="patient-username" class="form-control text-center" type="text" th:field="*{username}" placeholder="Enstein92"></input>
 		   	<div id="patient-username-error"></div>
 		   	
 		   	<label>Email</label>
-		   	<input onfocus="setId('#patient-email')" class="form-control text-center" type="text"  th:field="*{email}" placeholder="email@email.com" ></input>
+		   	<input onfocus="setId('#patient-email'); setURL('/is-valid/email/');" class="form-control text-center" type="text"  th:field="*{email}" placeholder="email@email.com" ></input>
 		  	<div id="patient-email-error"></div>
 		   	<br>
 		   
 		   	<label>Password</label>
-		   	<input onfocus="setId('#patient-password')" class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
+		   	<input onfocus="setId('#patient-password'); setIdTwo('#patient-passwordTwo'); setURL('/is-valid/password/');" class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
 		   	pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please enter a password that is at least 8 characters long, has at least one uppercase and one lower letter, and contains at least one number"></input>
 		   	<div id="patient-password-error"></div>
 		   	
 		   	<label>Repeat Password</label>
-		   	<input onclick="setId('#patient-passwordTwo')" class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
+		   	<input onclick="setId('#patient-passwordTwo'); setIdTwo('#patient-password'); setURL('/matches/');" class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
 		   	<div id="patient-passwordTwo-error"></div>
 		   	<br>
 		   	<button id="reg-btn-one" class="btn btn-primary" type="submit" th:if="${#fields.hasAnyErrors() != true}">Register</button>
@@ -144,12 +144,17 @@
 </div>
 </body>
 <script>
+
 /* $('.username-error').hide(); */
 /* $('.username-error').html('<p class="alert alert-info">Username already exists. Choose another username.</p>'); */
+
+
 var alertId = '#patient-username-error';
 var inputFieldId = '#patient-username';
+var inputFieldIdTwo = null;
 var regButton = '#reg-btn-one';
-var url = "/ajax/is-user/";//+$(inputFieldId).val()??
+var address = "/ajax/is-user/";//+$(inputFieldId).val()??
+var url = "";
 function setId(regId, uId, button) {
 	alertId = regId;
 	inputFieldId = uId;
@@ -159,16 +164,28 @@ function setId(regId, uId, button) {
 }
 
 function setId(id) {
-	inputFieldId = fieldId;
-	alertId = fieldId+'-error';
+	inputFieldId = id;
+	alertId = id+'-error';
+}
+
+function setIdTwo(idTwo) {
+	inputFieldIdTwo = idTwo;
 }
 
 function setRegBtn(button) {
 	regButton = button;
 }
 
+function setAddress(a) {
+	address = '/ajax/'+a;
+}
+
 function setURL() {
-	
+	if (inputFieldIdTwo != null && inputFieldIdTwo != "") {
+	url = address+$(inputFieldId).val()+'/'+$(inputFieldIdTwo).val();
+	} else {
+	url = address+$(inputFieldId).val();
+	}
 }
 /*Make button unusable*/
 function disableButton () {
@@ -197,15 +214,17 @@ function notEmpty(s) {
 	}
 }
 
+
 function validateUsername() {
 	$(inputFieldId).keyup(function(){
 		$(alertId).hide();//reset alert
 		enableButton();//reset button
-		
+		setIdTwo(null);
+		setURL();
 		/*Check whether data is valid entry*/
 		$.ajax({
 			type:"GET",
-			url:"/ajax/is-user/"+$(inputFieldId).val(),
+			url:url,
 			success: function(result) {
 				console.log(result);
 				 if ($.trim(result) == '{}') {
@@ -220,10 +239,12 @@ function validateUsername() {
 						var errorMessage = data.errorMessage;
 						$(alertId).show();
 						$(alertId).html('<p class="alert alert-info">'+errorMessage+'</p>');
+						setIdTwo(null);
 						console.log(errorMessage);
 					} else {
 						enableButton();
 						$(alertId).hide();
+						setIdTwo(null);
 						console.log("Available username.");
 					}
 				 } 
