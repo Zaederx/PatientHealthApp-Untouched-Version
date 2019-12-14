@@ -66,12 +66,12 @@
 		   	<br>
 		   
 		   	<label>Password</label>
-		   	<input onfocus="setId('#patient-password'); setIdTwo('#patient-passwordTwo'); setAddress('/is-valid/password/');" id= "patient-password" class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
+		   	<input onfocus="setId('#patient-password'); setAddress('/is-valid/password/');" id= "patient-password" class="form-control text-center" type="password" th:field="*{password}" placeholder="SomeThingICanRemeber!56" 
 		   	pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please enter a password that is at least 8 characters long, has at least one uppercase and one lower letter, and contains at least one number"></input>
 		   	<div id="patient-password-error"></div>
 		   	
 		   	<label>Repeat Password</label>
-		   	<input onclick="setId('#patient-passwordTwo'); setIdTwo('#patient-password'); setAddress('/matches/');" id="patient-passwordTwo" class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
+		   	<input onclick="setId('#patient-password'); setIdTwo('#patient-passwordTwo'); setAddress('/matches/');" id="patient-passwordTwo" class="form-control text-center" type="password" th:field="*{password2}" placeholder="SomeThingICanRemeber!56"/>
 		   	<div id="patient-passwordTwo-error"></div>
 		   	<br>
 		   	<button id="reg-btn-one" class="btn btn-primary" type="submit">Register</button>
@@ -145,13 +145,7 @@
 </body>
 <script>
 
-/* $('.username-error').hide(); */
-/* $('.username-error').html('<p class="alert alert-info">Username already exists. Choose another username.</p>'); */
 
-/* var error = ($({#fields})); **/ // doesnt work - private field */
-
-	
-/* var err = $.url.param('error'); */
 var params = new URLSearchParams(window.location.search);
 var error = params.has('error');
 var alertId = '#patient-username-error';
@@ -185,15 +179,18 @@ function setRegBtn(button) {
 function setAddress(a) {
 	address = '/ajax'+a;
 }
-
+/* if (inputFieldIdTwo !== "" && inputFieldIdTwo !== null */
 function setURL() {
-	if (inputFieldIdTwo != null && inputFieldIdTwo != "") {
+	if (inputFieldId.includes("password") && $(inputFieldIdTwo).val() != null) {//contains method for generalisation of function
+		console.log('password ajax url');
 	url = address+$(inputFieldId).val()+'/'+$(inputFieldIdTwo).val();
 	} else {
 	url = address+$(inputFieldId).val();
 	}
 	console.log('url:'+url);
 }
+
+
 /*Make button unusable*/
 function disableButton () {
 	/*remove old css*/
@@ -226,7 +223,6 @@ function validateUsername() {
 	$(':input').keyup(function(){
 		$(alertId).hide();//reset alert
 		enableButton();//reset button
-		setIdTwo(null);
 		setURL();
 		/*Check whether data is valid entry*/
 		$.ajax({
@@ -245,13 +241,11 @@ function validateUsername() {
 						disableButton();
 						var errorMessage = data.errorMessage;
 						$(alertId).show();
-						$(alertId).html('<p class="alert alert-info">'+errorMessage+'</p>');
-						setIdTwo(null);//TODO - delete if found unecessary
+						$(alertId).html('<p class="alert alert-info">'+errorMessage+'</p>');			
 						console.log(errorMessage);
 					} else {
 						enableButton();
 						$(alertId).hide();
-						setIdTwo(null);
 						console.log("Available username.");
 					}
 				 } 

@@ -29,7 +29,7 @@ public class AppRestController {
 	@Autowired
 	UserServiceDetailsImpl uService;
 	@GetMapping("/search-user/{username}")
-	public @ResponseBody String getUsername(@PathVariable String username) {
+	public String getUsername(@PathVariable String username) {
 		
 		User user = uRepo.findByUsername(username);
 		
@@ -38,13 +38,13 @@ public class AppRestController {
 	}
 	
 	@GetMapping("/search-name/{name}")
-	public @ResponseBody List<User> getUserByName(@PathVariable String name) {
+	public List<User> getUserByName(@PathVariable String name) {
 		List users = uRepo.findByName(name);
 		return users;
 	}
 	
 	@GetMapping("/is-user/{username}")
-	public @ResponseBody Response isUsername(@PathVariable(required = false) String username) {
+	public Response isUsername(@PathVariable(required = false) String username) {
 		Response res = new Response();
 		boolean exits = true;
 		
@@ -112,7 +112,7 @@ public class AppRestController {
 	@GetMapping("/is-valid/password/{password}/{passwordTwo}")
 	public Response isValidPassword(@PathVariable(required = false) String password, @PathVariable(required = false) String passwordTwo) {
 		Response res = new Response();
-		boolean valid = true;
+		boolean valid = false;
 		
 		if (password.isBlank()) {
 			res.setResponse(!valid);
@@ -123,12 +123,21 @@ public class AppRestController {
 		//IF PASSWORD 2 IS NOT NULL - THEN {
 		//TODO - Check whether password 1 and 2 match each other
 		//}
+		if (password != null && passwordTwo != null) {
+			if (password.equals(passwordTwo)) {
+				res.setResponse(valid);
+				return res;
+			}
+			res.setResponse(!valid);
+			res.setErrorMessage("Passwords do not match.");
+			return res;
+		}
 		
 		//TODO - 
 		return res;
 	}
 	
-	@GetMapping("/match/{passwordTwo}/{password}")
+	@GetMapping("/matches/{passwordTwo}/{password}")
 	public Response passwordsMatch() {
 		Response res = new Response();
 		

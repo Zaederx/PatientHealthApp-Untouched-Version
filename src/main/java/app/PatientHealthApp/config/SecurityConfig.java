@@ -1,6 +1,5 @@
 package app.PatientHealthApp.config;
 
-import java.nio.file.Files;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
