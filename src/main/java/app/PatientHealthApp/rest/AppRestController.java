@@ -81,7 +81,7 @@ public class AppRestController {
 		System.out.println("/is-valid/email/{email} - called");
 		
 		Patient p = uService.getPatientRepo().findByEmail(email);
-		String emailPattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\\\\.[a-z]{2,}$";
+		String emailPattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\\\\.[a-z]{2,}$";//TODO - is this the best regex pattern for email???
 		boolean matches = Pattern.matches(emailPattern, email);
 		
 		if(!matches) {

@@ -89,7 +89,7 @@ public class AdminController {
 //			model.addAttribute("patientRegForm", new PatientRegForm());
 			model.addAttribute("doctorRegForm", new DoctorRegForm());
 			model.addAttribute("adminRegForm", new AdminRegForm());
-			return "admin/admin-register-users";
+			return "redirect:/admin/register-users?error=true";
 		} else {
 		Patient p = new Patient(form);
 		pRepo.save(p);
