@@ -43,21 +43,29 @@ public class ChronicPatientHealthApp implements CommandLineRunner{
 	@Override
 	@Transactional
 	public void run (String ... strings ) throws Exception {
-//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//		Admin admin = new Admin();
-//		admin.setName("Zach");
-//		admin.setUsername("Z");
-//		admin.setPassword("password");
-//		admin.setId(5);
-//		
-//		uRepo.save(admin);
-//		Doctor doctor = new Doctor();
-//		doctor.setName("JIM");
-//		doctor.setPassword("password");
-////		doctor.setEmail("email@email.com");
-//		doctor.setUsername("JIM");
-//		doctor.setRole("PATIENT");
-//		uRepo.save(doctor);
+//		testUsers();
 		
+	}
+	
+	private void testUsers() {
+		Admin admin = new Admin();
+		admin.setName("Zach");
+		admin.setUsername("Z");
+		admin.setPassword("password");
+		admin.setId(5);
+		uRepo.save(admin);
+		
+		Doctor doctor = new Doctor();
+		doctor.setName("JIM");
+		doctor.setPassword("password");
+		doctor.setUsername("JIM");
+		uRepo.save(doctor);
+		
+		Patient p = new Patient();
+		p.setName("Zach");
+		p.setEmail("email@email.com");
+		p.setPassword("password");
+		p.setUsername("zim");
+		uRepo.save(p);
 	}
 }

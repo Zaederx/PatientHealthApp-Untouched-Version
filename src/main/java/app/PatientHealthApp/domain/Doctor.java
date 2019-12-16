@@ -29,7 +29,7 @@ public class Doctor extends User {
 	public List<Patient> patients;
 	
 	public Doctor() {
-		
+		this.role = "DOCTOR";
 	}
 	
 	public Doctor (String name, String username, String password, String role) {

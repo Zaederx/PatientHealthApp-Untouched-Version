@@ -72,7 +72,7 @@ public class AppRestController {
 	@GetMapping("/is-valid/email/{email}")
 	public Response isValidEmail(@PathVariable(required = false) String email) {
 		Response res = new Response();
-		boolean valid = true;
+		boolean valid = false;
 		
 		if (email.isBlank()) {
 			res.setResponse(!valid);
@@ -86,25 +86,26 @@ public class AppRestController {
 		
 		if(!matches) {
 			res.setResponse(!valid);
-			res.setErrorMessage("Passwords do not match."
-					+ " Please enter your password correctly both times.");
+			res.setErrorMessage("Not valid email. Please enter a valid email address "
+					+ "or contact our administrative team for assistance.");
+			return res;
 		}
 		
 		try {
 			if (p != null) {
-				res.setResponse(valid);
+				res.setResponse(!valid);
 				res.setErrorMessage("This email is already in use."
 						+ " Please choose a unique email or contact our "
 						+ "administrative team for assistance.");//TODO - help / support / assistance ?? which is better
 				return res;
 			} 
 		} catch (Exception e) {
-			res.setResponse(valid);
+			res.setResponse(!valid);
 			res.setErrorMessage("There seems to be a problem."
 					+ " Please contact our administrative team for assistance.");//TODO
 			return res;
 		}
-		res.setResponse(!valid);
+		res.setResponse(valid);
 		
 		return res;
 	}
@@ -138,8 +139,24 @@ public class AppRestController {
 	}
 	
 	@GetMapping("/matches/{passwordTwo}/{password}")
-	public Response passwordsMatch() {
+	public Response passwordsMatch(@PathVariable(required = false) String password, @PathVariable(required = false) String passwordTwo) {
 		Response res = new Response();
+		
+		boolean valid = false;
+		
+		if (password.isBlank()) {
+			res.setResponse(!valid);
+		}
+		
+		if (password != null && passwordTwo != null) {
+			if (password.equals(passwordTwo)) {
+				res.setResponse(valid);
+				return res;
+			}
+			res.setResponse(!valid);
+			res.setErrorMessage("Passwords do not match.");
+			return res;
+		}
 		
 		return res;
 	}
