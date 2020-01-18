@@ -49,8 +49,49 @@ public class Patient extends User{
 		super(form.getName(), form.getUsername(),form.getPassword(),"PATIENT");
 		this.email = form.getEmail();
 	}
-	public void setEmail(String email) {
-	this.email = email;
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
 	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the doctors
+	 */
+	public List<Doctor> getDoctors() {
+		return doctors;
+	}
+
+	/**
+	 * @param doctors the doctors to set
+	 */
+	public void setDoctors(List<Doctor> doctors) {
+		this.doctors = doctors;
+	}
+
+	/**
+	 * @return the prescriptions
+	 */
+	public List<Prescription> getPrescriptions() {
+		return prescriptions;
+	}
+
+	/**
+	 * @param prescriptions the prescriptions to set
+	 */
+	public void setPrescriptions(List<Prescription> prescriptions) {
+		this.prescriptions = prescriptions;
+	}
+
+	
 	
 }

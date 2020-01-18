@@ -1,6 +1,6 @@
 package app.PatientHealthApp.domain;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,14 +36,60 @@ public class Prescription {
 	private Medication medication;
 	
 	
+	public Prescription() {
+		
+	}
 	
 	public Prescription(String directions) {
 		this.directions = directions;
 	}
 	
-	
-	public void setMedication (Medication medication) {
+	public Prescription(Medication medication) {
 		this.medication = medication;
 	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the directions
+	 */
+	public String getDirections() {
+		return directions;
+	}
+
+	/**
+	 * @param directions the directions to set
+	 */
+	public void setDirections(String directions) {
+		this.directions = directions;
+	}
+
+	/**
+	 * @return the medication
+	 */
+	public Medication getMedication() {
+		return medication;
+	}
+
+	/**
+	 * @param medication the medication to set
+	 */
+	public void setMedication(Medication medication) {
+		this.medication = medication;
+	}
+	
+	
 
 }

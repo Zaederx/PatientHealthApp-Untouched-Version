@@ -47,8 +47,9 @@ public class PatientServiceDetailsImpl implements PatientServices, UserDetailsSe
 		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		if (p.getRole().equals("PATIENT")) {
 			System.out.println("Patient created and granted authority.");
-		} authorities.add(new SimpleGrantedAuthority("ROLE_PATIENT"));
-		
+			authorities.add(new SimpleGrantedAuthority("ROLE_PATIENT"));
+//		} authorities.add(new SimpleGrantedAuthority("ROLE_PATIENT"));
+		}
 		return new User(
 				username,
 				p.getPassword(),
