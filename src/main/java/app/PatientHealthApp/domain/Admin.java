@@ -1,12 +1,9 @@
 package app.PatientHealthApp.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 /**
- * Admin {@link Enity} class that defines admin table.
+ * Admin {@link Entity} class that defines admin table.
  * @author Zachary Ishmael
  *
  */

@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 
 import app.PatientHealthApp.formObjects.DoctorRegForm;
 /**
- * Doctor {@link Entity} that defines doctor table.
+ * Doctor {@link Entity} class that defines the doctor table.
  * 
  * @author Zachary Ishmael
  *

@@ -24,15 +24,28 @@ public class AppRestController {
 	@Autowired
 	UserServiceDetailsImpl uService;
 	@GetMapping("/search-user/{username}")
-	public String getUsername(@PathVariable String username) {
+	public Object getUsername(@PathVariable String username) {
 		
 		User user = uRepo.findByUsername(username);
-		return username;
+		if (user == null) {
+			Response res = new Response();
+			res.setResponse(false);
+			res.setMessage("No user found.");
+			return res;
+		}
+		
+		return user;
 	}
 	
 	@GetMapping("/search-name/{name}")
-	public List<User> getUserByName(@PathVariable String name) {
-		List users = uRepo.findByName(name);
+	public Object getUserByName(@PathVariable String name) {
+		List<User> users = uRepo.findByName(name);
+		if (users == null) {
+			Response res = new Response();
+			res.setResponse(false);
+			res.setMessage("No users found.");
+			return res;
+		}
 		return users;
 	}
 	
@@ -56,7 +69,7 @@ public class AppRestController {
 		try {
 		if ( user != null) {
 			res.setResponse(exits);
-			res.setErrorMessage("Username already exists. Choose another username.");
+			res.setMessage("Username already exists. Choose another username.");
 			return res;
 		}}
 		catch (Exception e) {
@@ -92,7 +105,7 @@ public class AppRestController {
 		
 		if(!matches) {
 			res.setResponse(!valid);
-			res.setErrorMessage("Not valid email. Please enter a valid email address "
+			res.setMessage("Not valid email. Please enter a valid email address "
 					+ "or contact our administrative team for assistance.");
 			return res;
 		}
@@ -100,14 +113,14 @@ public class AppRestController {
 		try {
 			if (p != null) {
 				res.setResponse(!valid);
-				res.setErrorMessage("This email is already in use."
+				res.setMessage("This email is already in use."
 						+ " Please choose a unique email or contact our "
 						+ "administrative team for assistance.");//TODO - help / support / assistance ?? which is better
 				return res;
 			} 
 		} catch (Exception e) {
 			res.setResponse(!valid);
-			res.setErrorMessage("There seems to be a problem."
+			res.setMessage("There seems to be a problem."
 					+ " Please contact our administrative team for assistance.");//TODO
 			return res;
 		}
@@ -126,7 +139,7 @@ public class AppRestController {
 		if (p1Null || password.isBlank()) {
 			res.setResponse(!valid);
 			//TODO make error message more user friendly
-			res.setErrorMessage("First password field is empty.");
+			res.setMessage("First password field is empty.");
 			return res;
 		}
 		
@@ -175,7 +188,7 @@ public class AppRestController {
 		
 		if (!matches) {
 			res.setResponse(!valid);
-			res.setErrorMessage(errorMessage);
+			res.setMessage(errorMessage);
 			
 //			return res;
 		}
@@ -187,7 +200,7 @@ public class AppRestController {
 			if (!password.equals(passwordTwo)) {
 				res.setResponse(!valid);
 				errorMessage += "Passwords do not match.";
-				res.setErrorMessage(errorMessage);
+				res.setMessage(errorMessage);
 				return res;
 			}
 			res.setResponse(valid);
@@ -213,22 +226,11 @@ public class AppRestController {
 				return res;
 			}
 			res.setResponse(!valid);
-			res.setErrorMessage("Passwords do not match.");
+			res.setMessage("Passwords do not match.");
 			return res;
 		}
 		
 		return res;
 	}
 	
-	
-	
-	/**
-	 * Used to validate a doctor GMC code
-	 * Mock GMC check - no real api accesible
-	 */
-	@GetMapping("is-valid/gmc/{gmc}")
-	public Response isValidGMC() {
-		
-		return null;
-	}
 }

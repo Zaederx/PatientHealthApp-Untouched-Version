@@ -18,6 +18,10 @@
 
     <!-- JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <title>Patient Home</title>
   </head>
   <body>
@@ -33,7 +37,19 @@
             <a class="nav-link" th:href="@{/patient/home}"><button class="btn btn-secondary active">User Home</button></a>
           </li>
           <li class="nav-item" >
-            <a class="nav-link" href="@{/logout}"><button class="btn btn-primary">Logout</button></a>
+            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Doctor Details</button></a>
+          </li>
+           <li class="nav-item" >
+            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Messages</button></a>
+          </li>
+           <li class="nav-item" >
+            <a class="nav-link" th:href="@{/patient/details}"><button class="btn btn-primary">Patient Details</button></a>
+          </li>
+          <li class="nav-item" >
+            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Need Help?</button></a>
+          </li>
+           <li class="nav-item" >
+            <a class="nav-link" th:href="@{/logout}"><button class="btn btn-primary">Logout</button></a>
           </li>
         
           <!-- <li class="nav-item" >
@@ -47,6 +63,24 @@
     
     <!-- Body div -->
     <div class="container col-sm-9" ><!-- style="background-color:grey;" -->
+    	<!-- Model - For ViewingPrescriptions -->
+    	<div id="presModal" class="modal fade" role="dialog">
+    		<div class="modal-dialog">
+    			<!-- Modal Content  -->
+    			<div class="modal-content">
+    				<div class="modal-header">
+    					<h4 class="modal-title">Prescription</h4>
+    					<button type="button" class="close" data-dismiss="modal"><i class="fa fa-times-circle" style="color:red;" aria-hidden="true"></i></button>
+    				</div>
+    				<div class="modal-body">
+    					<h5 id="presModal-subTitle"></h5>
+    					<p id="presModal-body"></p>
+    				</div>
+    			</div>
+    		</div>
+    		
+    	</div>
+    	
     	<br>
    
     	<div class="row">
@@ -81,12 +115,83 @@
 	    	</div>
     	</div>
     	
+    	<div class="row">
+    	<!-- Last Message -->
+    	<div class="col-sm-6"> 
+	    		<!-- Table -->
+	    		<table class="table">
+	    			<thead>
+	    				<tr>
+		    				<th colspan="2">Last Message</th>
+	    				</tr>
+	    			</thead>
+	    			<tbody id="lastMessage">
+	    			<!-- Fill via ajax method -->
+	    			</tbody>
+	    		</table>
+	    	</div>
+	    	
+    	<!-- Notes -->
+    	<div class="col-sm-6"> 
+	    		<!-- Table -->
+	    		<table class="table">
+	    			<thead>
+	    				<tr>
+		    				<th colspan="2">Notes</th>
+	    				</tr>
+	    			</thead>
+	    			<tbody id="notes">
+	    			<!-- Fill via ajax method -->
+	    			</tbody>
+	    		</table>
+	    	</div>
+	    </div>
     	<br><br><br><br><br><br>
     </div>
     
   
   </body>
   <script>
+  
+  /* Set Prescirption name and Description */
+  
+  var presName;
+  var preDescription;
+  function setPrescriptionName(pName,pDesc) {
+	  console.log("*********** setPrescriptionModal called ***********");
+	  console.log(pName);
+	  console.log(pDesc);
+	  presName = pName;
+	  presDescription = pDesc;
+	  displayPrescription();
+  }
+  
+  function displayPrescription() {
+	  console.log("*********** displayPrescriptionModal called ***********");
+	  $('#presModal-subTitle').text(presName);
+	  $('#presModal-body').text(presDescription);
+  } 
+  
+  /* View Prescripiton method */
+ /*  var prescription;
+  function prepPrescriptionModal(pres) {
+	  console.log("*********** prepPrescriptionModal called ***********");
+	  console.log(pres);
+	  console.log(pres.medication.name);
+	  setPrescription(pres);
+	  displayPrescription();
+  }
+  function setPrescription(pres) {
+	  console.log("*********** setPrescriptionModal called ***********");
+	  prescription = pres;
+  }
+  
+  function displayPrescription() {
+	  console.log("*********** displayPrescriptionModal called ***********");
+	  $('#presModal-subTitle').text(prescription.medication.name);
+	  $('#presModal-body').text(prescription.directions);
+  } */
+  
   
   //RETRIEVE
   /* Method to retrieve active prescriptions */
@@ -103,8 +208,8 @@
 			  } else {
 				  for (var i = 0 ; i < data.count; i++ ) {
 					  var m = '<row><td>'+data.prescriptions[i].medication.name+'</td>'
-					  + '<td><button onclick="editPrescription('+data.prescriptions[i].id+')" class="btn btn-primary btn-space">Edit</button>'
-					  +'<button onclick="deletePrescription('+data.prescriptions[i].id+')\;" class="btn btn-primary">Delete</button></td></row>';
+					  + '<td><button onclick="setPrescriptionName(\''+data.prescriptions[i].medication.name+'\',\''+data.prescriptions[i].directions+'\')\;" class="btn btn-primary btn-space" data-toggle="modal" data-target="#presModal">View</button>'
+					  +'<button onclick="cancelPrescription('+data.prescriptions[i].id+')\;" class="btn btn-danger">Cancel</button></td></row>';
 				  	$('#prescriptions').html(m);
 					 
 				  }

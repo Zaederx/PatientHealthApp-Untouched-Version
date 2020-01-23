@@ -1,22 +1,33 @@
 package app.PatientHealthApp.jsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * Class used to transport ajax responses.
- * Spring's Jackson support used to convert to json objects.
+ * 
  * @author Zachary Ishmael
  *
  */
+@JsonInclude(Include.NON_NULL)
 public class Response {
 	/*If Form has Errors 
 	 * - response set to true*/
 	private boolean response;
+	private String message;
 
-	private String errorMessage;
-
+	private List<String> messages;
+	private Integer count;
 
 	public Response () {
 		response = false;
-		errorMessage = "";
+		message = "";
+		messages = new ArrayList<String>();
+		count = 0;
 	}
 	
 	/**
@@ -34,17 +45,53 @@ public class Response {
 	}
 
 	/**
-	 * @return the errorMessage
+	 * @return the message
 	 */
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
 
 	/**
-	 * @param errorMessage the errorMessage to set
+	 * @param message the errorMessage to set
 	 */
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setMessage(String errorMessage) {
+		this.message = errorMessage;
+	}
+
+	/**
+	 * @return the messages
+	 */
+	public List<String> getMessages() {
+		return messages;
+	}
+
+	/**
+	 * @param messages the messages to set
+	 */
+	public void setMessages(List<String> messages) {
+		this.messages = messages;
+	}
+
+	/**
+	 * @return the count
+	 */
+	public Integer getCount() {
+		count();
+		return count;
+	}
+
+	/**
+	 * @param count the count to set
+	 */
+	public void setCount(Integer count) {
+		this.count = count;
+	}
+
+	@JsonIgnore
+	public void count() {
+		if (messages != null) {
+			count = messages.size();
+		}
 	}
 	
 	

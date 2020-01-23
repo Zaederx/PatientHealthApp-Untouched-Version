@@ -1,48 +1,47 @@
 package app.PatientHealthApp.domain;
 
-
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import app.PatientHealthApp.formObjects.PatientRegForm;
 
 /**
- * 
+ * An {@link Entity} class used to represent patients with chronic illness.
  * @author Zachary Ishmael<br>
- * 
- * Class used to represent patients with chronic illness.
  */
 
 @Entity(name = "patient")
 public class Patient extends User{
 	
+	/* Account Details */
 	@Column(name="email", unique = true)
 	private String email;
 	
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "patients")
-	public List<Doctor> doctors;
+	private List<Doctor> doctors;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	public List<Prescription> prescriptions;
+	private List<Prescription> prescriptions;
+	
+	@Column
+	Date birthday;
 	
 	//default constructor - needed by Spring
 	public Patient() {
 		this.role = "PATIENT";
+		this.birthday = new Date();
 	}
 	
-	public Patient(String name, String username, String password, String role, String email) {
+	public Patient(String name, String username, String password, String role, String email, Date birthday) {
 		super(name,username,password,"PATIENT");
 		this.email = email;
+		this.birthday = birthday;
 	}
 
 	public Patient(PatientRegForm form) {
@@ -90,6 +89,20 @@ public class Patient extends User{
 	 */
 	public void setPrescriptions(List<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
+	}
+
+	/**
+	 * @return the birthday
+	 */
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	/**
+	 * @param birthday the birthday to set
+	 */
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	

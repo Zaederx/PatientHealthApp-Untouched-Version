@@ -1,6 +1,5 @@
 package app.PatientHealthApp.controllers;
 
-import java.security.Principal;
 
 import javax.validation.Valid;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import app.PatientHealthApp.addressEnums.AdminAddressBook;
-import app.PatientHealthApp.domain.Doctor;
 import app.PatientHealthApp.domain.Patient;
 import app.PatientHealthApp.formObjects.AdminRegForm;
 import app.PatientHealthApp.formObjects.DoctorRegForm;

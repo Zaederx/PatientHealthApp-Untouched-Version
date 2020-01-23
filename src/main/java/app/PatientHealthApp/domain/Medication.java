@@ -8,8 +8,6 @@ import javax.persistence.Id;
 
 /**
  * 
- * @author Zachary Ishmael<br>
- * 
  * @apiNote
  * Class used to represent medical drugs.<br>
  * 
@@ -18,6 +16,8 @@ import javax.persistence.Id;
  * 
  * This class also keeps a list of all other medication names that
  * have been initailised or added.
+ * 
+ * @author Zachary Ishmael<br>
  *
  */
 @Entity(name = "Medication")

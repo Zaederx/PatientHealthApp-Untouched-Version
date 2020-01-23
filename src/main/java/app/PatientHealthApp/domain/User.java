@@ -1,5 +1,8 @@
 package app.PatientHealthApp.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +40,8 @@ public class User {
 	protected String password;
 	@Column(nullable = false)
 	protected String role;
+	@OneToMany
+	protected List<Message> messages;
 	@Transient
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
@@ -49,6 +55,7 @@ public class User {
 		this.username = username;
 		this.password = encoder.encode(password);
 		this.role = role;
+		this.messages = new ArrayList<Message>();
 	}
 
 	/**
@@ -119,6 +126,20 @@ public class User {
 	 */
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	/**
+	 * @return the messages
+	 */
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	/**
+	 * @param messages the messages to set
+	 */
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 	
 	

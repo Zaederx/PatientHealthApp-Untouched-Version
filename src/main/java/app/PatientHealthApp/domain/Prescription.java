@@ -9,14 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 /**
- * @author Zachary Ishmael
  * 
  * Entity to represent doctor's prescription to a patient.
  * 
  * Each prescription has instructions to the patient
  * and references a medication in the Medication entity.
- * 
- *
+ * @author Zachary Ishmael
  */
 
 @Entity(name="prescription")
