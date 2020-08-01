@@ -1,11 +1,12 @@
 package app.PatientHealthApp.jsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import app.PatientHealthApp.domain.users.User;
 
 /**
  * Class used to transport ajax responses.
@@ -21,13 +22,17 @@ public class Response {
 	private String message;
 
 	private List<String> messages;
+	/*Count of messages - needed for javascript message processing*/
 	private Integer count;
-
+//	private User user;
+	private String link;
+	
 	public Response () {
 		response = false;
 		message = "";
-		messages = new ArrayList<String>();
-		count = 0;
+		messages = null;
+		count = null;
+		link = null;
 	}
 	
 	/**
@@ -93,6 +98,21 @@ public class Response {
 			count = messages.size();
 		}
 	}
+
+	/**
+	 * @return the link
+	 */
+	public String getLink() {
+		return link;
+	}
+
+	/**
+	 * @param link the link to set
+	 */
+	public void setLink(String link) {
+		this.link = link;
+	}
+	
 	
 	
 }

@@ -4,7 +4,7 @@ package app.PatientHealthApp.formObjects;
  * @author Zachary Ishmael
  *
  */
-public class AdminRegForm {
+public class AdminRegForm implements UserRegFormInterface {
 	
 	private String name;
 	
@@ -68,6 +68,16 @@ public class AdminRegForm {
 	 */
 	public void setPassword2(String password2) {
 		this.password2 = password2;
+	}
+
+
+	@Override
+	public String getEmail() {
+		return "dummy_email@email.com";
+	}
+
+	@Override
+	public void setEmail(String email) {
 	}
 	
 	

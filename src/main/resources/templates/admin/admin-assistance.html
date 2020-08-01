@@ -23,22 +23,7 @@
   <div class="jumbotron text-center">
     <h1>Admin Home</h1>
     <h3></h3>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark row">
-    <div class="justify-content-left col-sm-2"><a th:ref="@{/home}" class="fa fa-home" style="color:white; font-size:40px"></a></div>
-    <div class="col-sm-8">
-      <ul class="navbar-nav justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/admin/home}"><button class="btn btn-primary">Admin Home</button></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/logout}"><button class="btn btn-primary">Logout</button></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/patient/assistance}"><button class="btn btn-secondary active">Get Assistance</button></a>
-        </li>
-      </ul>
-	</div>
-    </nav>
+     <div th:replace="admin/admin-nav"></div>
   </div>
 
   <div class="container text-center">

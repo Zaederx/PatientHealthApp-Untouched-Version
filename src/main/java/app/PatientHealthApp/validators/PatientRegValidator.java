@@ -4,51 +4,39 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import app.PatientHealthApp.domain.Patient;
-import app.PatientHealthApp.domain.User;
+import app.PatientHealthApp.domain.users.Patient;
+import app.PatientHealthApp.domain.users.User;
 import app.PatientHealthApp.formObjects.PatientRegForm;
 import app.PatientHealthApp.repository.UserRepository;
+import app.PatientHealthApp.services.UserServiceDetailsImpl;
 
 /**
- * User to validate Admin's Patient Registration Form.
+ * Used to perform extra validate check on PatientRegForm.
  * @author Zachary Ishmael
  *
  */
 public class PatientRegValidator implements Validator {
-	UserRepository uRepo;
+	UserServiceDetailsImpl userServices;
 	
-	public PatientRegValidator(UserRepository uRepo) {
-		this.uRepo = uRepo;
+	public PatientRegValidator(UserServiceDetailsImpl userServices) {
+		this.userServices = userServices;
 	}
 	
+	//TODO - support method inccorect - should be PateitnRegForm
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return PatientRegValidator.class.equals(clazz);
+		return PatientRegForm.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
 		PatientRegForm form = (PatientRegForm)target;
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "", "Name must not be empty.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors , "username", "" ,"Username must not be empty.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "", "Email must not be empty.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Password must not be empty.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password2", "", "Passwords must match: Second Password Field cannot be empty.");
 		
-		//TODO Username must not already exist
-		User user = uRepo.findByUsername(form.getUsername());
-		
-		if (!user.equals(null)) {
-			errors.rejectValue("username", "" , "Username is already in use");
-		}
-		
-		//TODO PASSWORDS MUST MEET Password Strength Criteria(regex)
+		//performs validation checks
+		userServices.validateUser(form, errors);
 		
 		
-		//TODO PASSWORDS MUST MATCH
-		
-		//TODO Email must not be associated with another account
-		
+		//can add additional checks if needed
 		
 	}
 

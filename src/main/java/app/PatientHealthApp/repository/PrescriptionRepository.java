@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import app.PatientHealthApp.domain.Prescription;
+import app.PatientHealthApp.domain.objects.Prescription;
 
 public interface PrescriptionRepository extends CrudRepository<Prescription, Integer>{
 	Prescription findById(int id);

@@ -21,75 +21,180 @@
   <div class="jumbotron text-center">
     <h1>Search Users</h1>
     <h3></h3>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="/home"><button class="btn btn-secondary active">Admin Home</button></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login"><button class="btn btn-primary">Logout</button></a>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="/patient/assistance"><button class="btn btn-primary">Get Assistance</button></a>
-        </li> -->
-      </ul>
-
-    </nav>
+     <div th:replace="admin/admin-nav"></div>
   </div>
 
+	
   <div class="container text-center">
     <h3>How can we help?</h3>
+    <br>
+    
+    <!-- Custom Switch -->
+    <div class="custom-control custom-switch">
+	<input type="checkbox" class="custom-control-input" id="search-switch" checked>
+	<label class="custom-control-label" for="search-switch">Search by Name/Username</label>
+</div>
+
+<div id="messages"></div>
+
+<table id="results" class="table" >
+</table>
     <div id="accordian">
+    
+    <!--Card 1 Seach Doctor  -->
       <div class="card">
         <div class="card-header">
-          <a class="card-link" data-toggle="collapse" href="#c1">Register Doctor</a>
+          <a class="card-link" data-toggle="collapse" href="#c1">Search Doctor</a>
         </div>
       </div>
-
       <div id="c1" class="collapse show" data-parent="#accordian">
         <div class="card-body">
-        <form class="form-group" action="#" th:action="@{admin/admin-add-doctor}" th:object="${doctorForm}" method="POST">
-
-          <label class="label">Name</label>
-          <input class="form-control" type="text" placeholder="Please Enter a Name"/>
-
-          <label class="label">Username</label>
-        	<input class="form-control" type="text" placeholder="username" th:field="*{username}"/>
-
-          <label class="label">Specialisation</label>
-          <input class="form-control" type="text" placeholder="GP" th:field="*{specialisation}" />
-
-          <label class="label">Medical License Code</label>
-          <input class="form-control" type="text" placeholder="S0JITR0GJDRJ" />
-
-          <label class="label">Assigned Centre</label>
-          <input class="form-control" type="text" placeholder="DeMontfort Surgery"></input>
-
-        </form>
+         <label class="label">Search</label>
+          <input id="doctor-search-input" onfocus="setInputId('doctor-search-input');setUrl('0');" class="form-control text-center" type="text" placeholder="Please Enter a Name"/>
         </div>
       </div>
+      
+      <!--Card 2 Search Patient -->
       <div class="card">
         <div class="card-header">
-          <a class="card-link" data-toggle="collapse" href="#c2">Register Patient</a>
+          <a class="card-link" data-toggle="collapse" href="#c2">Search Patient</a>
         </div>
       </div>
       <div id="c2" class="collapse" data-parent="#accordian">
         <div class="card-body">
-
+        	<label class="label">Search</label>
+          <input id="patient-search-input" onfocus="setInputId('patient-search-input');setUrl('1');" class="form-control text-center" type="text" placeholder="Please Enter a Name"/>
         </div>
       </div>
+      
+      <!--Card 2 Search Admin -->
         <div class="card">
           <div class="card-header">
-            <a class="card-link" data-toggle="collapse" href="#c3">Register Admin</a>
+            <a class="card-link" data-toggle="collapse" href="#c3">Search Admin</a>
           </div>
         </div>
         <div id="c3" class="collapse" data-parent="#accordian">
           <div class="card-body">
-
+			<label class="label">Search</label>
+          <input id="admin-search-input" onfocus="setInputId('admin-search-input');setUrl('2');" class="form-control text-center" type="text" placeholder="Please Enter a Name"/>
       </div>
     </div>
   </div>
 </div>
-</body>
 
+
+</body>
+<script> 
+var searchByName = true;
+var inputId = '';
+var type = '';
+
+/* function flipSwitch() {
+	console.log('******** flipSwitch called ********');
+	if (document.getElementById('search-switch').checked) {
+		searchByName = true;
+	} 
+	else {
+		searchByName = false;
+	}
+} */
+function setInputId(id) {
+	console.log('******** setInputId called ********');
+	inputId = id;
+}
+function setUrl(address) {
+	console.log('******** setUrl called ********');
+	type = address;
+}
+/*search ajax url - search by name OR by username*/
+function searchUrl () {
+	console.log('******** searchUrl called ********');
+	var input = $('#'+inputId).val();
+	if (document.getElementById('search-switch').checked) {
+		console.log('******** switch checked ********');
+		searchByUsername(input);
+	} 
+	else {
+		searchByN(input);
+	}
+
+}
+
+/*keep as searchByN - "searchByName" is skipped by parser for some reason - 
+ * possibly parser optimisation bug.*/
+function searchByN (input) {
+	console.log('******** searchByName called ********');
+	$.ajax({
+		type:'GET',
+		url :'/ajax/search-name/'+input+'/'+type,
+		success: function (d) {
+			var data = JSON.stringify(d);
+			var res = JSON.parse(data);
+			var m = '';
+			
+			if (res.response == true) {
+				console.log('******** response true ********');
+				console.log('******** count'+res.count+'********');
+				m += '<tr><th>Name</th><th>Username</th><th>Role</th></tr>';
+				for (var i=0; i < res.count; i++) {
+					m += '<row><td>'+res.users[i].name+'</td><td>'+res.users[i].username+'</td><td>'+res.users[i].role+'</td><row>';
+				}
+				$('#results').html(m);
+			}
+			else {
+				for (var i=0; i < res.count; i++) {
+					m += '<p>'+res.users[i].name+'</p>';
+				}
+				$('#messages').html(m);
+			}
+			
+		},
+		 error: function () {
+			$('messages').html('<p>Error occured. Please trying logging in again.</p>');
+		}
+	});
+}
+
+function searchByUsername(input) {
+	console.log('******** searchByUsername called ********');
+	$.ajax({
+		type:'GET',
+		url :'/ajax/search-user/'+input+'/'+type,
+		success: function (d) {
+			var data = JSON.stringify(d);
+			var res = JSON.parse(data);
+			
+			if (res.response == true) {
+				var m = '';
+				console.log('******** response true ********');
+				console.log('******** count'+res.count+'********');
+				console.log('******** count'+res.user.name+'********');
+				m += '<tr><th>Name</th><th>Username</th><th>Role</th></tr>';
+				console.log(res.user.name);
+				m += '<row><td>'+res.user.name+'</td><td>'+res.user.username+'</td><td>'+res.user.role+'</td><row>';
+				
+				$('#results').html(m);
+				
+			}
+			else {
+				for (var i = 0; i < res.count; i++) {
+					m += '<p>'+res.messages[i]+'</p>';
+				}
+				$('#messages').html(m);
+			}
+			
+		}
+/* 		,
+		 error: function () {//change later - more correct implementation
+			$('#messages').html('<p class="alert alert-danger">Empty Field</p>');
+		} */
+	});
+
+}
+
+
+$(document).ready($(':input').keyup(function(){
+	searchUrl();
+}))
+</script>
 </html>

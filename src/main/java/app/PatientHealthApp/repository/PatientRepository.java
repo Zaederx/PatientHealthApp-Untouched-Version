@@ -2,9 +2,11 @@ package app.PatientHealthApp.repository;
 
 
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
-import app.PatientHealthApp.domain.Patient;
+import app.PatientHealthApp.domain.users.Patient;
 
 /**
  * A Repository used to interface with User data in the database.
@@ -19,10 +21,11 @@ import app.PatientHealthApp.domain.Patient;
 public interface PatientRepository extends CrudRepository<Patient,Integer> {
 
 	
-	Patient findByUsername(String name);
-	
+	Patient findByUsername(String username);
+	List<Patient> findByName(String name);
 	Patient findByEmail(String email);
 	
 	Patient findById(int id);
+	List<Patient> findAll();
 	
 }

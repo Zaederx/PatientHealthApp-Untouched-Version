@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <!-- CSS -->
@@ -16,6 +16,10 @@
     <title>Doctor Patients</title>
   </head>
   <body>
-
+	<div class="jumbotron text-center">
+    <h1>Doctor Home</h1>
+    <h3>Helping you, help others...</h3>
+   <div th:replace="doctor/doctor-nav"></div>
+	</div>
   </body>
 </html>

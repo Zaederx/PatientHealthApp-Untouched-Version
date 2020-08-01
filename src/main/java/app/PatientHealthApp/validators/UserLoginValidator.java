@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import app.PatientHealthApp.domain.User;
+import app.PatientHealthApp.domain.users.User;
 import app.PatientHealthApp.formObjects.UserLoginForm;
 import app.PatientHealthApp.repository.UserRepository;
 

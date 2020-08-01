@@ -5,7 +5,7 @@ package app.PatientHealthApp.formObjects;
  * @author Zachary Ishmael
  *
  */
-public class PatientRegForm {
+public class PatientRegForm implements UserRegFormInterface{
 
 	private String name;
 	

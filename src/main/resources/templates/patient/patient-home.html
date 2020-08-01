@@ -31,37 +31,10 @@
       <h3>Accessible health care at you convenience</h3>
       
       <!-- Navigation Bar -->
-      <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center row">
-        <ul class="navbar-nav">
-          <li class="nav-item" >
-            <a class="nav-link" th:href="@{/patient/home}"><button class="btn btn-secondary active">User Home</button></a>
-          </li>
-          <li class="nav-item" >
-            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Doctor Details</button></a>
-          </li>
-           <li class="nav-item" >
-            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Messages</button></a>
-          </li>
-           <li class="nav-item" >
-            <a class="nav-link" th:href="@{/patient/details}"><button class="btn btn-primary">Patient Details</button></a>
-          </li>
-          <li class="nav-item" >
-            <a class="nav-link" th:href="@{/}"><button class="btn btn-primary">Need Help?</button></a>
-          </li>
-           <li class="nav-item" >
-            <a class="nav-link" th:href="@{/logout}"><button class="btn btn-primary">Logout</button></a>
-          </li>
-        
-          <!-- <li class="nav-item" >
-            <a class="nav-link" href="/home/register"><button class="btn btn-primary">Prescriptions</button></a>
-          </li>
-          -->
-        </ul> 
-
-      </nav>
+      <div th:replace="patient/patient-nav"></div>
     </div>
     
-    <!-- Body div -->
+    <!-- Content div -->
     <div class="container col-sm-9" ><!-- style="background-color:grey;" -->
     	<!-- Model - For ViewingPrescriptions -->
     	<div id="presModal" class="modal fade" role="dialog">
@@ -108,7 +81,7 @@
 		    				<th colspan="2">Next Appointment</th>
 	    				</tr>
 	    			</thead>
-	    			<tbody id="appointment">
+	    			<tbody id="appointments">
 		    		<!-- Filled via ajax method -->
 	    			</tbody>
 	    		</table>
@@ -149,48 +122,87 @@
     	<br><br><br><br><br><br>
     </div>
     
-  
+	  <div id="cancelAppointmentModel" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Are you Sure?</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span><!-- &times for x button -->
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>If yes, tell us why and we might be able to reschedule or find a way to make it work.</p>
+	        <textarea id="appointment-modal-text"></textarea>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   </body>
   <script>
   
   /* Set Prescirption name and Description */
+  var dataStore;//stores Prescription data
+  var dataAppointments;
+  var dataMessages;
+  var dataNotes;
   
-  var presName;
-  var preDescription;
-  function setPrescriptionName(pName,pDesc) {
-	  console.log("*********** setPrescriptionModal called ***********");
-	  console.log(pName);
-	  console.log(pDesc);
-	  presName = pName;
-	  presDescription = pDesc;
-	  displayPrescription();
-  }
   
-  function displayPrescription() {
+  /*View Prescriptions*/
+  function displayPrescription(i) {
 	  console.log("*********** displayPrescriptionModal called ***********");
-	  $('#presModal-subTitle').text(presName);
-	  $('#presModal-body').text(presDescription);
+	  $('#presModal-subTitle').text(dataStore.prescriptions[i].medication.name);
+	  $('#presModal-body').text(dataStore.prescriptions[i].directions);
   } 
   
-  /* View Prescripiton method */
- /*  var prescription;
-  function prepPrescriptionModal(pres) {
-	  console.log("*********** prepPrescriptionModal called ***********");
-	  console.log(pres);
-	  console.log(pres.medication.name);
-	  setPrescription(pres);
-	  displayPrescription();
-  }
-  function setPrescription(pres) {
-	  console.log("*********** setPrescriptionModal called ***********");
-	  prescription = pres;
+  
+  /*Asks patient if they are sure and provides
+  information as to why cancel or reschedules is necessary.
+  i.e. "Are you sure? Is there something we can do to help?"*/
+  function cancelAppointmentModal(i) {
+	$('cancelAppointmentModal').show();
   }
   
-  function displayPrescription() {
-	  console.log("*********** displayPrescriptionModal called ***********");
-	  $('#presModal-subTitle').text(prescription.medication.name);
-	  $('#presModal-body').text(prescription.directions);
-  } */
+  /*Submits text from AppointmentModal.
+   Allows admins to confirm cancellation or perform reschedulling as neccessary.
+  */
+  function cancelAppointmentModalSubmitText(i) {
+	  var message = $('cancelAppointmentModal').val();
+	  cancelAppointment(i,message);
+  }
+  
+  function cancelAppointment(i,message) {
+	  $.ajax({
+		  type:"POST",
+		  url:'/ajax/patient/appointments/cancel/'+dataAppointments[i].id+"/"+message,
+		  success:function(response) {
+			  var dString = JSON.stringify(response);
+			  var data = JSON.parse(dString);
+			  if (data.count == 0) {
+				  console.log("data count zero if statement");
+				  $('#appointments').html("<tr><td>No Active Prescriptions</td></tr>");
+			  } else {
+				  dataStore = data;
+				  var m = "";
+				  for (var i = 0 ; i < data.listSize; i++ ) {
+					  m += '<tr><td>'+data.prescriptions[i].medication.name+'</td>'
+					  + '<td><button onclick="displayPrescription('+i+')\" class="btn btn-primary btn-space" data-toggle="modal" data-target="#presModal">View</button>'
+					  +'<button onclick="cancelPrescription('+data.prescriptions[i].id+')\;" class="btn btn-danger">Cancel</button></td></tr>';
+				  }
+				  console.log("Show output:\n"+m);
+				  $('#appointments').html(m);
+			  }
+		  },
+		  error:function() {
+			  $('#appointments').html("An error has occured. Please try refreshing the page.");
+		  }
+	  })
+	  
+  }
   
   
   //RETRIEVE
@@ -206,13 +218,14 @@
 				  console.log("data count zero if statement");
 				  $('#prescriptions').html("<tr><td>No Active Prescriptions</td></tr>");
 			  } else {
-				  for (var i = 0 ; i < data.count; i++ ) {
-					  var m = '<row><td>'+data.prescriptions[i].medication.name+'</td>'
-					  + '<td><button onclick="setPrescriptionName(\''+data.prescriptions[i].medication.name+'\',\''+data.prescriptions[i].directions+'\')\;" class="btn btn-primary btn-space" data-toggle="modal" data-target="#presModal">View</button>'
-					  +'<button onclick="cancelPrescription('+data.prescriptions[i].id+')\;" class="btn btn-danger">Cancel</button></td></row>';
-				  	$('#prescriptions').html(m);
-					 
+				  dataStore = data;
+				  var m = "";
+				  for (var i = 0 ; i < data.listSize; i++ ) {
+					  m += '<tr><td>'+data.prescriptions[i].medication.name+'</td>'
+					  + '<td><button onclick="displayPrescription('+i+')\" class="btn btn-primary btn-space" data-toggle="modal" data-target="#presModal">View</button></td></tr>';
 				  }
+				  console.log("Show output:\n"+m);
+				  $('#prescriptions').html(m);
 			  }
 		  },
 		  error:function() {
@@ -221,17 +234,24 @@
 	  });
   });
   
-  /* Method to retrieve next appointment */
+  /* Method to retrieve next appointments */
   $(document).ready(function(){
 	  $.ajax({
 		  type:'GET',
-		  url:'',
+		  url:'/calendar/patient/events',
 		  success:function(data) {
-			  for (var i = 0 ; i < data.count; i++ ) {
-				  var m = '<row><td>'+data.message+'</td>'
-				  + '<td><button onclick="editAppointment('+data.id+')">Edit</button>'
-				  +'<button onclick="deleteAppointment('+data.id+')\;">Delete</button></td></row>';
-			  	$('#prescriptions').html(m);
+			  dataAppointments = data;
+			  if (data.response == false) {
+				  $('#appointments').html(data.message);
+			  } 
+			  else {
+				  var m = "";
+				  for (var i = 0 ; i < data.listSize; i++ ) {
+					  m += '<row><td>'+data.message+'</td>'
+					  + '<td><button onclick="cancelAppointmentModal('+i+')">Cancel</button>';
+				  }
+				  console.log('appointments:'+m);
+				  $('#appointments').html(m);
 			  }
 		  },
 		  error:function(){
@@ -240,6 +260,23 @@
 	  });
   });
   
+  /*Test*/
+/*   $(document).ready(function(){
+	  $.ajax({
+		  type:'GET',
+		  url:'/calendar/test',
+		  success:function(data) {
+			  dataAppointments = data;
+				  m += '<row><td>'+data.message+'</td>'
+				  + '<td><button onclick="cancelAppointmentModal('+i+')">Cancel</button>';
+			  console.log('appointments:'+m);
+			  $('#appointments').html(m);
+		  },
+		  error:function(){
+			  
+		  }
+	  });
+  }); */
   //FILL
   /* Method to fill active prescriptions */
   
